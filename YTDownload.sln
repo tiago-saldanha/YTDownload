@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35219.272
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YTDownload", "YTDownload\YTDownload.csproj", "{D5FB64A5-32C6-4358-ADE5-77079EF83A23}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{C439AEF6-32C7-4599-B381-9F74C20128E2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D5FB64A5-32C6-4358-ADE5-77079EF83A23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5FB64A5-32C6-4358-ADE5-77079EF83A23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5FB64A5-32C6-4358-ADE5-77079EF83A23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5FB64A5-32C6-4358-ADE5-77079EF83A23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C439AEF6-32C7-4599-B381-9F74C20128E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C439AEF6-32C7-4599-B381-9F74C20128E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C439AEF6-32C7-4599-B381-9F74C20128E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C439AEF6-32C7-4599-B381-9F74C20128E2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F671C038-0DB8-4E97-B89F-B3F0C09DCCDD}
+	EndGlobalSection
+EndGlobal
