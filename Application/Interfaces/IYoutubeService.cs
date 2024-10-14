@@ -2,7 +2,7 @@
 
 namespace Application.Core.Interfaces
 {
-    public interface IVideoService
+    public interface IYoutubeService
     {
         Task<string> DownloadAudio(DownloadAudioCommand command);
         Task<string> DownloadVideo(DownloadVideoCommand command);

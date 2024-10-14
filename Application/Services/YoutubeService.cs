@@ -9,13 +9,13 @@ using Application.Commands;
 
 namespace Application.Core.Services
 {
-    public class VideoService : IVideoService
+    public class YoutubeService : IYoutubeService
     {
         private readonly YoutubeClient _client;
         private string OutputDirectory = Path.Combine(Directory.GetCurrentDirectory(), "output");
         private readonly string _ffmpegPath;
 
-        public VideoService(YoutubeClient client, string ffmpegPath)
+        public YoutubeService(YoutubeClient client, string ffmpegPath)
         {
             _client = client;
             CreateOutputDirectory();

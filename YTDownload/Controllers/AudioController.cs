@@ -6,18 +6,18 @@ namespace YTDownload.Controllers
 {
     [ApiController]
     [Route("[controller]/[Action]")]
-    public class VideoController : ControllerBase
+    public class AudioController : ControllerBase
     {
         private readonly IYoutubeService _service;
-        public VideoController(IYoutubeService service) => _service = service;
+        public AudioController(IYoutubeService service) => _service = service;
 
         [HttpPost]
-        public async Task<IActionResult> DownloadVideoOnDisk([FromBody] DownloadVideoCommand command)
+        public async Task<IActionResult> DownloadAudioOnDisk([FromBody] DownloadAudioCommand command)
         {
             try
             {
-                var filePath = await _service.DownloadVideo(command);
-                return Ok($"Video salvo no Disco em: {filePath}");
+                var filePath = await _service.DownloadAudio(command);
+                return Ok($"Audio salvo no Disco em: {filePath}");
             }
             catch (Exception ex)
             {
@@ -26,11 +26,11 @@ namespace YTDownload.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetVideo([FromBody] DownloadVideoCommand command)
+        public async Task<IActionResult> GetAudio([FromBody] DownloadAudioCommand command)
         {
             try
             {
-                var filePath = await _service.DownloadVideo(command);
+                var filePath = await _service.DownloadAudio(command);
                 var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
                 return File(fileStream, "audio/mpeg", Path.GetFileName(filePath));
             }
