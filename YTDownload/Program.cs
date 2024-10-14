@@ -1,11 +1,8 @@
-using YoutubeExplode;
-using Application.Core.Services;
-using Application.Core.Interfaces;
+using YTDownload.Dependencies;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<YoutubeClient>();
-builder.Services.AddScoped<IVideoService, VideoService>();
+builder.Services.ConfigureServices();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
