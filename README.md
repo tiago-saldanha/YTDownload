@@ -1,5 +1,5 @@
 ## YTDownload - ASP.NET Core Project
- Project to download videos and audio from youtube using this [library[(https://github.com/Tyrrrz/YoutubeExplode) and [ffmpeg](https://www.ffmpeg.org).
+ Project to download videos and audio from youtube using this [library](https://github.com/Tyrrrz/YoutubeExplode) and [ffmpeg](https://www.ffmpeg.org).
 
 ## Requirements
 SDK net8.0
