@@ -53,3 +53,7 @@ If you set the environment variable ASPNETCORE_ENVIRONMENT to Develpment, [Swagg
 You can also set the environment variable ASPNETCORE_ENVIRONMENT for Production to disable [Swagger UI](https://swagger.io/tools/swagger-ui/).
 
 Try in browser: http://localhost:8080/swagger/index.html
+
+## Licença
+
+Este projeto está licenciado sob a Licença LGPL - veja o arquivo [LICENSE.txt](LICENSE) para detalhes.
