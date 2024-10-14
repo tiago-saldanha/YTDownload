@@ -22,4 +22,5 @@ RUN dotnet publish "./YTDownload.csproj" -c $BUILD_CONFIGURATION -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY YTDownload/lib /app/lib
 ENTRYPOINT ["dotnet", "YTDownload.dll"]
