@@ -1,7 +1,10 @@
-﻿namespace Application.Core.Interfaces
+﻿using Application.Commands;
+
+namespace Application.Core.Interfaces
 {
     public interface IVideoService
     {
-        Task<string> DownloadAudio(string url, bool mp3 = false);
+        Task<string> DownloadAudio(DownloadAudioCommand command);
+        Task<string> DownloadVideo(DownloadVideoCommand command);
     }
 }

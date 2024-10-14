@@ -1,6 +1,6 @@
 ﻿using Application.Core.Interfaces;
+using Application.Commands;
 using Microsoft.AspNetCore.Mvc;
-using YTDownload.Commands;
 
 namespace YTDownload.Controllers
 {
@@ -12,11 +12,40 @@ namespace YTDownload.Controllers
         public VideoController(IVideoService service) => _service = service;
 
         [HttpPost]
-        public async Task<IActionResult> DownloadAudio([FromBody] DownloadAudioCommand command)
+        public async Task<IActionResult> DownloadVideoOnDisk([FromBody] DownloadVideoCommand command)
         {
             try
             {
-                var filePath = await _service.DownloadAudio(command.Url);
+                var filePath = await _service.DownloadVideo(command);
+                return Ok($"Video salvo no Disco em: {filePath}");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetVideo([FromBody] DownloadVideoCommand command)
+        {
+            try
+            {
+                var filePath = await _service.DownloadVideo(command);
+                var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+                return File(fileStream, "audio/mpeg", Path.GetFileName(filePath));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DownloadAudioOnDisk([FromBody] DownloadAudioCommand command)
+        {
+            try
+            {
+                var filePath = await _service.DownloadAudio(command);
                 return Ok($"Audio salvo no Disco em: {filePath}");
             }
             catch (Exception ex)
@@ -26,13 +55,13 @@ namespace YTDownload.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DownloadAudioMp3([FromBody] DownloadAudioCommand command)
+        public async Task<IActionResult> GetAudio([FromBody] DownloadAudioCommand command)
         {
             try
             {
-                var filePath = await _service.DownloadAudio(command.Url, true);
-                var audioFileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-                return File(audioFileStream, "audio/mpeg", Path.GetFileName(filePath));
+                var filePath = await _service.DownloadAudio(command);
+                var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+                return File(fileStream, "audio/mpeg", Path.GetFileName(filePath));
             }
             catch (Exception ex)
             {
