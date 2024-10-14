@@ -35,7 +35,7 @@ namespace Application.Core.Services
                 IVideoStreamInfo videoStreamInfo = GetVideoStreamInfo(manifest, command.Resolutiuon, command.Mp4);
 
                 var streamInfos = new IStreamInfo[] { audioStreamInfo, videoStreamInfo };
-                await _client.Videos.DownloadAsync(streamInfos, new ConversionRequestBuilder(filePath).Build());
+                await _client.Videos.DownloadAsync(streamInfos, new ConversionRequestBuilder(filePath).SetFFmpegPath(_ffmpegPath).Build());
 
                 if (command.Mp4)
                     filePath = VideoToMp4(filePath);
