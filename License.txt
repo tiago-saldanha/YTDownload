@@ -7,6 +7,60 @@ Copyright (C) 1991, 1999 Free Software Foundation, Inc.
 Everyone is permitted to copy and distribute verbatim copies
 of this license document, but changing it is not allowed.
 
-...
+                   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
-This is a summary of the LGPL version 2.1. For the complete text, please refer to the official GNU website or include the full text here.
+  0. This License applies to any software library or other program which is
+  licensed under this License. Each licensee is addressed as "you".
+
+  1. You may copy and distribute verbatim copies of the library's
+  complete source code as you receive it, in any medium, provided that you
+  conspicuously and appropriately publish on each copy an appropriate
+  copyright notice and disclaimer of warranty; keep intact all the notices
+  that refer to this License and to the absence of any warranty; and give
+  any other recipients of the library a copy of this License along with the
+  library.
+
+  2. You may modify your copy or copies of the library or any portion of it,
+  and copy and distribute such modifications under the terms of Section 1
+  above, provided that you also meet all of these conditions:
+  
+    a) The modified work must itself be a software library.
+    
+    b) You must cause the modified files to carry prominent notices stating
+    that you changed the files and the date of any change.
+    
+    c) You must license the entire library, as modified, under this License
+    to all third parties, including those to whom you distribute the library.
+    
+    d) You must make sure that the library is not linked to proprietary
+    programs that are not free.
+
+  3. You may copy and distribute the library (or a portion of it, under
+  the terms of this License) in object code or executable form under the
+  terms of Sections 1 and 2 above provided that you accompany it with the
+  corresponding machine-readable source code, which must be distributed
+  under the terms of this License.
+
+  4. You may not copy, modify, sublicense, or distribute the library
+  except as expressly provided under this License. Any attempt otherwise to
+  copy, modify, sublicense, or distribute the library is void, and will
+  automatically terminate your rights under this License.
+
+  5. This License is not intended to limit the licensing of the library to
+  only free software. However, you are not allowed to impose any
+  additional restrictions beyond what is stated in this License.
+
+  6. The Free Software Foundation may publish revised and/or new versions
+  of the Lesser General Public License from time to time. Such new versions
+  will be similar in spirit to the present version, but may differ in
+  detail to address new problems or concerns. Each version is given a
+  distinguishing version number. If the Library specifies a version number
+  of this License which applies to it and "any later version", you have the
+  option of following the terms and conditions either of that version or of
+  any later version published by the Free Software Foundation. If the
+  Library does not specify a version number of this License, you may choose
+  any version ever published by the Free Software Foundation.
+
+  7. If you wish to incorporate parts of the Library into other free
+  programs whose distribution conditions are different, write to the author
+  to ask for permission.
