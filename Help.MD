@@ -10,8 +10,6 @@ http://localhost:8080/swagger/index.html
 ### Download Mp3 via WSL
 vim .bashrc and paste
 
-'''
-
 function download_youtube_audio {
         local url=$1
         local output_file=$2
@@ -22,8 +20,6 @@ function download_youtube_audio {
                 -d "{ \"url\": \"$url\" }" \
                 --output "$output_file"
 }
-
-'''
 
 source ~/.bashrc
 Ex.: download_youtube_audio "https://www.youtube.com/watch?v=dlGOiuxSzVw" "teste.mp3"
