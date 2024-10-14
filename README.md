@@ -16,7 +16,7 @@ Enter the root directory and run
 
 2 - Run docker-compose.yml `docker compose up -d`
 
-## How to build and start a image exposure on port 5000 for HTTP
+## How to build and start a image exposure on port 8080 for HTTP
 ```bash
 docker build -f "C:\Users\Tiago\Source\Repos\YTDownload\YTDownload\Dockerfile" -t ytdownload:dev "C:\Users\Tiago\Source\Repos\YTDownload"
 ```
