@@ -1,16 +1,17 @@
-## Docker Image
+### Docker Image
 docker build -f "C:\Users\Tiago\Source\Repos\YTDownload\YTDownload\Dockerfile" -t ytdownload:dev "C:\Users\Tiago\Source\Repos\YTDownload"
 
-## Docker Run
+### Docker Run
 docker run -dp 8080:80 -p 8081:443 -e "ASPNETCORE_ENVIRONMENT=Development" -e "ASPNETCORE_URLS=http://+:80" ytdownload:dev
 
-## Download via Swagger
+### Download via Swagger
 http://localhost:8080/swagger/index.html
 
-## Download Mp3 via WSL
+### Download Mp3 via WSL
 vim .bashrc and paste
 
 '''
+
 function download_youtube_audio {
         local url=$1
         local output_file=$2
@@ -21,7 +22,8 @@ function download_youtube_audio {
                 -d "{ \"url\": \"$url\" }" \
                 --output "$output_file"
 }
+
 '''
 
 source ~/.bashrc
-Ex.: download_youtube_audio "https://www.youtube.com/watch?v=dlGOiuxSzVw" "/mnt/c/Users/Tiago/Music/teste.mp3"
+Ex.: download_youtube_audio "https://www.youtube.com/watch?v=dlGOiuxSzVw" "teste.mp3"
