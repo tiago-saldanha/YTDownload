@@ -9,7 +9,7 @@ namespace Application.Core.Services
     public class VideoService : IVideoService
     {
         private readonly YoutubeClient _client;
-        private string OutputDirectory = Directory.GetCurrentDirectory() + "\\Output";
+        private string OutputDirectory = Path.Combine(Directory.GetCurrentDirectory(), "output");
         private string FFmpegPath { get; set; }
         public VideoService(YoutubeClient client)
         {
@@ -46,33 +46,35 @@ namespace Application.Core.Services
         }
         private string SetFFmpegPath()
         {
-            var libDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Lib");
-            var ffmpegPath = Path.Combine(libDirectory, "ffmpeg.exe");
+            var ffmpegPath = Environment.OSVersion.Platform == PlatformID.Unix ?
+                Path.Combine(Directory.GetCurrentDirectory(), "lib", "ffmpeg") :
+                Path.Combine(Directory.GetCurrentDirectory(), "lib", "ffmpeg.exe");
+
             if (!File.Exists(ffmpegPath))
             {
-                throw new FileNotFoundException("FFmpeg não encontrado. Certifique-se de que o ffmpeg.exe está na pasta Lib.");
+                throw new FileNotFoundException("FFmpeg não encontrado. Certifique-se de que o ffmpeg.exe/ffmpeg está na pasta lib.");
             }
             return ffmpegPath;
         }
         private string AudioToMp3(string filePath)
         {
-            var mp3FilePath = Path.ChangeExtension(filePath, ".mp3");
+            var outputFilePath = Path.ChangeExtension(filePath, ".mp3");
 
             var process = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = FFmpegPath,
-                    Arguments = $"-i \"{filePath}\" \"{mp3FilePath}\"",
-                    UseShellExecute = false,
-                    CreateNoWindow = true
+                    Arguments = $"-i \"{filePath}\" \"{outputFilePath}\" -y",
+                    UseShellExecute = true,
+                    CreateNoWindow = false,
                 }
             };
 
             process.Start();
             process.WaitForExit();
 
-            return mp3FilePath;
+            return outputFilePath;
         }
     }
 }
