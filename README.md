@@ -56,4 +56,4 @@ Try in browser: http://localhost:8080/swagger/index.html
 
 ## Licença
 
-Este projeto está licenciado sob a Licença LGPL - veja o arquivo [LICENSE.txt](LICENSE) para detalhes.
+Este projeto está licenciado sob a Licença LGPL - veja o arquivo [LICENSE](LICENSE.txt) para detalhes.
