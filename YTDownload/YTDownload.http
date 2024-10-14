@@ -1,6 +1,0 @@
-@YTDownload_HostAddress = http://localhost:5164
-
-GET {{YTDownload_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

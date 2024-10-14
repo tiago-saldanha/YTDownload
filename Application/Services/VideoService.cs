@@ -10,13 +10,15 @@ namespace Application.Core.Services
     {
         private readonly YoutubeClient _client;
         private string OutputDirectory = Path.Combine(Directory.GetCurrentDirectory(), "output");
-        private string FFmpegPath { get; set; }
-        public VideoService(YoutubeClient client)
+        private readonly string _ffmpegPath;
+
+        public VideoService(YoutubeClient client, string ffmpegPath)
         {
             _client = client;
             CreateOutputDirectory();
-            FFmpegPath = SetFFmpegPath();
+            _ffmpegPath = ffmpegPath;
         }
+
         public async Task<string> DownloadAudio(string url, bool mp3 = false)
         {
             var filePath = string.Empty;
@@ -40,22 +42,12 @@ namespace Application.Core.Services
 
             return filePath;
         }
+
         private void CreateOutputDirectory()
         {
             if (!Directory.Exists(OutputDirectory)) Directory.CreateDirectory(OutputDirectory);
         }
-        private string SetFFmpegPath()
-        {
-            var ffmpegPath = Environment.OSVersion.Platform == PlatformID.Unix ?
-                Path.Combine(Directory.GetCurrentDirectory(), "lib", "ffmpeg") :
-                Path.Combine(Directory.GetCurrentDirectory(), "lib", "ffmpeg.exe");
 
-            if (!File.Exists(ffmpegPath))
-            {
-                throw new FileNotFoundException("FFmpeg não encontrado. Certifique-se de que o ffmpeg.exe/ffmpeg está na pasta lib.");
-            }
-            return ffmpegPath;
-        }
         private string AudioToMp3(string filePath)
         {
             var outputFilePath = Path.ChangeExtension(filePath, ".mp3");
@@ -64,7 +56,7 @@ namespace Application.Core.Services
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = FFmpegPath,
+                    FileName = _ffmpegPath,
                     Arguments = $"-i \"{filePath}\" \"{outputFilePath}\" -y",
                     UseShellExecute = true,
                     CreateNoWindow = false,
