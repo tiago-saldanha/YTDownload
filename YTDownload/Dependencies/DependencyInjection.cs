@@ -29,7 +29,7 @@ namespace YTDownload.Dependencies
         private static IServiceCollection ConfigureYoutubeClient(this IServiceCollection services)
         {
             services.AddSingleton<YoutubeClient>();
-            services.AddScoped<IVideoService, VideoService>();
+            services.AddScoped<IYoutubeService, YoutubeService>();
             return services;
         }
     }
