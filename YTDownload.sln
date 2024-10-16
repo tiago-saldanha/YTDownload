@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35219.272
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YTDownload", "YTDownload\YTDownload.csproj", "{D5FB64A5-32C6-4358-ADE5-77079EF83A23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YTDownload.API", "YTDownload\YTDownload.API.csproj", "{D5FB64A5-32C6-4358-ADE5-77079EF83A23}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{C439AEF6-32C7-4599-B381-9F74C20128E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YTDownload.Application", "Application\YTDownload.Application.csproj", "{C439AEF6-32C7-4599-B381-9F74C20128E2}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{52C2C533-838C-40F1-972C-FFE74F2225F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsApp", "..\WindowsApp\WindowsApp.csproj", "{1C57416B-5776-451D-B9F6-DD9DF282AD1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YTDownload.App", "..\WindowsApp\YTDownload.App.csproj", "{1C57416B-5776-451D-B9F6-DD9DF282AD1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
