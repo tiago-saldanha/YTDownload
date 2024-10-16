@@ -1,8 +1,8 @@
-﻿using Application.Core.Interfaces;
-using Application.Core.Services;
-using YoutubeExplode;
+﻿using YoutubeExplode;
+using YTDownload.Application.Interfaces;
+using YTDownload.Application.Services;
 
-namespace YTDownload.Dependencies
+namespace YTDownload.API.Dependencies
 {
     public static class DependencyInjection
     {

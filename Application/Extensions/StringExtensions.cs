@@ -1,4 +1,4 @@
-﻿namespace Application.Core.Extensions
+﻿namespace YTDownload.Application.Extensions
 {
     public static class StringExtensions
     {

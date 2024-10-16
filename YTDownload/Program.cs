@@ -1,4 +1,4 @@
-using YTDownload.Dependencies;
+using YTDownload.API.Dependencies;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,4 +1,4 @@
-﻿namespace Application.Commands
+﻿namespace YTDownload.Application.Commands
 {
     public class DownloadAudioCommand
     {
