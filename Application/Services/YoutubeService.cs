@@ -1,13 +1,13 @@
 ﻿using System.Diagnostics;
 using YoutubeExplode;
-using YoutubeExplode.Videos.Streams;
-using Application.Core.Extensions;
-using Application.Core.Interfaces;
 using YoutubeExplode.Videos;
 using YoutubeExplode.Converter;
-using Application.Commands;
+using YoutubeExplode.Videos.Streams;
+using YTDownload.Application.Extensions;
+using YTDownload.Application.Interfaces;
+using YTDownload.Application.Commands;
 
-namespace Application.Core.Services
+namespace YTDownload.Application.Services
 {
     public class YoutubeService : IYoutubeService
     {

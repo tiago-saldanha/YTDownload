@@ -1,8 +1,8 @@
-﻿using Application.Core.Interfaces;
-using Application.Commands;
+﻿using YTDownload.Application.Interfaces;
+using YTDownload.Application.Commands;
 using Microsoft.AspNetCore.Mvc;
 
-namespace YTDownload.Controllers
+namespace YTDownload.API.Controllers
 {
     [ApiController]
     [Route("[controller]/[Action]")]

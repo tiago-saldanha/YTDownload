@@ -1,6 +1,6 @@
-﻿using Application.Commands;
+﻿using YTDownload.Application.Commands;
 
-namespace Application.Core.Interfaces
+namespace YTDownload.Application.Interfaces
 {
     public interface IYoutubeService
     {
