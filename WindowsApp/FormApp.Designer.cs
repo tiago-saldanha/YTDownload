@@ -61,7 +61,7 @@
             buttonDownload.TabIndex = 2;
             buttonDownload.Text = "Download Vídeo";
             buttonDownload.UseVisualStyleBackColor = true;
-            buttonDownload.Click += buttonDownload_Click;
+            buttonDownload.Click += Download;
             // 
             // labelOutput
             // 

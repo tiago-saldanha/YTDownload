@@ -13,7 +13,7 @@ namespace WindowsApp
             _service = service;
         }
 
-        private async void buttonDownload_Click(object sender, EventArgs e)
+        private async void Download(object sender, EventArgs e)
         {
             var command = new DownloadVideoCommand { Url = textBoxUrlVideo.Text, Mp4 = false, Resolutiuon = "1080p" };
             var result = string.Empty;
@@ -21,7 +21,6 @@ namespace WindowsApp
             {
                 textBoxOutput.Text = string.Empty;
                 result = await _service.DownloadVideo(command);
-                
             }
             catch
             {
