@@ -4,9 +4,12 @@ namespace YTDownload.App.Controlls
 {
     public static class MediaPlayer
     {
-        public static void Play(FileInfo file)
+        public static void Play(string filePath)
         {
-            if (file.Extension == ".webm" || file.Extension == ".mp4")
+            FileInfo file = new FileInfo(filePath);
+            if (!file.Exists) MessageBox.Show($"Arquivo inválido!");
+
+            if (file.Extension == ".webm" || file.Extension == ".mp4" || file.Extension == ".mp3")
             {
                 try
                 {
