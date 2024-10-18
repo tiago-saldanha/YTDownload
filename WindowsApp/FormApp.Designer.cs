@@ -35,6 +35,8 @@
             textBoxOutput = new TextBox();
             buttonPlay = new Button();
             buttonDownloadAudio = new Button();
+            checkBoxConverterMp3Mp4 = new CheckBox();
+            checkBoxAutoPlay = new CheckBox();
             SuspendLayout();
             // 
             // labelUrlVideo
@@ -57,7 +59,7 @@
             // buttonDownloadVideo
             // 
             buttonDownloadVideo.FlatStyle = FlatStyle.System;
-            buttonDownloadVideo.Location = new Point(170, 341);
+            buttonDownloadVideo.Location = new Point(24, 350);
             buttonDownloadVideo.Name = "buttonDownloadVideo";
             buttonDownloadVideo.Size = new Size(141, 34);
             buttonDownloadVideo.TabIndex = 2;
@@ -85,7 +87,7 @@
             // buttonPlay
             // 
             buttonPlay.FlatStyle = FlatStyle.System;
-            buttonPlay.Location = new Point(490, 341);
+            buttonPlay.Location = new Point(344, 350);
             buttonPlay.Name = "buttonPlay";
             buttonPlay.Size = new Size(141, 34);
             buttonPlay.TabIndex = 6;
@@ -96,7 +98,7 @@
             // buttonDownloadAudio
             // 
             buttonDownloadAudio.FlatStyle = FlatStyle.System;
-            buttonDownloadAudio.Location = new Point(329, 341);
+            buttonDownloadAudio.Location = new Point(183, 350);
             buttonDownloadAudio.Name = "buttonDownloadAudio";
             buttonDownloadAudio.Size = new Size(141, 34);
             buttonDownloadAudio.TabIndex = 7;
@@ -104,11 +106,31 @@
             buttonDownloadAudio.UseVisualStyleBackColor = true;
             buttonDownloadAudio.Click += DownloadAudio;
             // 
+            // checkBoxConverterMp3Mp4
+            // 
+            checkBoxConverterMp3Mp4.Location = new Point(501, 356);
+            checkBoxConverterMp3Mp4.Name = "checkBoxConverterMp3Mp4";
+            checkBoxConverterMp3Mp4.Size = new Size(160, 25);
+            checkBoxConverterMp3Mp4.TabIndex = 8;
+            checkBoxConverterMp3Mp4.Text = "Converter Para Mp3/Mp4";
+            checkBoxConverterMp3Mp4.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxAutoPlay
+            // 
+            checkBoxAutoPlay.Location = new Point(667, 356);
+            checkBoxAutoPlay.Name = "checkBoxAutoPlay";
+            checkBoxAutoPlay.Size = new Size(105, 25);
+            checkBoxAutoPlay.TabIndex = 9;
+            checkBoxAutoPlay.Text = "AutoPlay";
+            checkBoxAutoPlay.UseVisualStyleBackColor = true;
+            // 
             // FormApp
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(checkBoxAutoPlay);
+            Controls.Add(checkBoxConverterMp3Mp4);
             Controls.Add(buttonDownloadAudio);
             Controls.Add(buttonPlay);
             Controls.Add(textBoxOutput);
@@ -117,6 +139,7 @@
             Controls.Add(textBoxUrlVideo);
             Controls.Add(labelUrlVideo);
             Name = "FormApp";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Youtube Download";
             ResumeLayout(false);
             PerformLayout();
@@ -131,5 +154,7 @@
         private TextBox textBoxOutput;
         private Button buttonPlay;
         private Button buttonDownloadAudio;
+        private CheckBox checkBoxConverterMp3Mp4;
+        private CheckBox checkBoxAutoPlay;
     }
 }

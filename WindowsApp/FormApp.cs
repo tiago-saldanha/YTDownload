@@ -16,12 +16,15 @@ namespace WindowsApp
 
         private async void DownloadVideo(object sender, EventArgs e)
         {
-            var command = new DownloadVideoCommand { Url = textBoxUrlVideo.Text, Mp4 = false, Resolutiuon = "1080p" };
+            if (string.IsNullOrEmpty(textBoxUrlVideo.Text)) MessageBox.Show($"Informe uma url válida!");
+
             var filePath = string.Empty;
             try
             {
-                textBoxOutput.Clear();
+                ChangeEnableButtons();
+                var command = new DownloadVideoCommand { Url = textBoxUrlVideo.Text, Mp4 = checkBoxConverterMp3Mp4.Checked, Resolutiuon = "1080p" };
                 filePath = await _service.DownloadVideo(command);
+                textBoxOutput.Clear();
             }
             catch
             {
@@ -30,26 +33,21 @@ namespace WindowsApp
             {
                 textBoxOutput.Text = filePath;
                 textBoxUrlVideo.Clear();
-            }
-        }
-
-        private void Play(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrEmpty(textBoxOutput.Text))
-            {
-                FileInfo fileInfo = new FileInfo(textBoxOutput.Text);
-                MediaPlayer.Play(fileInfo);
+                if (checkBoxAutoPlay.Checked) Play(filePath);
+                ChangeEnableButtons();
             }
         }
 
         private async void DownloadAudio(object sender, EventArgs e)
         {
-            DownloadAudioCommand command = new DownloadAudioCommand { Url = textBoxUrlVideo.Text, Mp3 = true };
+            if (string.IsNullOrEmpty(textBoxUrlVideo.Text)) MessageBox.Show($"Informe uma url válida!");
             var filePath = string.Empty;
             try
             {
-                textBoxOutput.Clear();
+                ChangeEnableButtons();
+                DownloadAudioCommand command = new DownloadAudioCommand { Url = textBoxUrlVideo.Text, Mp3 = checkBoxConverterMp3Mp4.Checked };
                 filePath = await _service.DownloadAudio(command);
+                textBoxOutput.Clear();
             }
             catch
             {
@@ -58,7 +56,30 @@ namespace WindowsApp
             { 
                 textBoxOutput.Text = filePath;
                 textBoxUrlVideo.Clear();
+                if (checkBoxAutoPlay.Checked) Play(filePath);
+                ChangeEnableButtons();
             }
+        }
+
+        private void Play(object sender, EventArgs e)
+        {
+            ChangeEnableButtons();
+
+            if (string.IsNullOrEmpty(textBoxOutput.Text))
+                MessageBox.Show($"Nenhum arquivo lozalido!");
+            else
+                Play(textBoxOutput.Text);
+
+            ChangeEnableButtons();
+        }
+
+        private void Play(string filePath) => MediaPlayer.Play(filePath);
+
+        private void ChangeEnableButtons()
+        {
+            buttonDownloadVideo.Enabled = !buttonDownloadVideo.Enabled;
+            buttonDownloadAudio.Enabled = !buttonDownloadAudio.Enabled;
+            buttonPlay.Enabled = !buttonPlay.Enabled;
         }
     }
 }
