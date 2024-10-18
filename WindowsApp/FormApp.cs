@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using YTDownload.App.Controlls;
 using YTDownload.Application.Commands;
 using YTDownload.Application.Interfaces;
