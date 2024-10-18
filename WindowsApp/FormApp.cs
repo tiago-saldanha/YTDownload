@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using YTDownload.App.Controlls;
 using YTDownload.Application.Commands;
 using YTDownload.Application.Interfaces;
 
@@ -29,6 +31,15 @@ namespace WindowsApp
             {
                 textBoxOutput.Text = result;
                 textBoxUrlVideo.Text = string.Empty;
+            }
+        }
+
+        private void Play(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(textBoxOutput.Text))
+            {
+                FileInfo fileInfo = new FileInfo(textBoxOutput.Text);
+                MediaPlayer.Play(fileInfo);
             }
         }
     }
