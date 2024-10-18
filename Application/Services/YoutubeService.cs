@@ -113,7 +113,7 @@ namespace YTDownload.Application.Services
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = _ffmpegPath,
-                    Arguments = $"-i \"{filePath}\" \"{outputFilePath}\" -y",
+                    Arguments = $"-i \"{filePath}\" -preset ultrafast -b:a 192k \"{outputFilePath}\" -y",
                     UseShellExecute = true,
                     CreateNoWindow = false,
                 }
@@ -135,7 +135,7 @@ namespace YTDownload.Application.Services
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = _ffmpegPath,
-                    Arguments = $"-i \"{filePath}\" -c:v libx264 -c:a aac -threads {threadsToUse} -loglevel verbose -y \"{outputFilePath}\"",
+                    Arguments = $"-i \"{filePath}\" -c:v libx264 -preset ultrafast -c:a aac -b:a 128k -threads {threadsToUse} -y \"{outputFilePath}\"",
                     UseShellExecute = true,
                     CreateNoWindow = false,
                 }
