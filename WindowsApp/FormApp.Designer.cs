@@ -74,7 +74,7 @@
             labelOutput.Name = "labelOutput";
             labelOutput.Size = new Size(59, 15);
             labelOutput.TabIndex = 4;
-            labelOutput.Text = "Resultado";
+            labelOutput.Text = "Arquivo salvo em:";
             // 
             // textBoxOutput
             // 
