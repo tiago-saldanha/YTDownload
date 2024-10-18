@@ -81,7 +81,7 @@ namespace YTDownload.Application.Services
         private IVideoStreamInfo GetVideoStreamInfo(StreamManifest manifest, string resolution, bool mp4)
         {
             IVideoStreamInfo videoStreamInfo = manifest.GetVideoStreams()
-                    .Where(s => s.Container == Container.WebM && (s.VideoQuality.Label == resolution))
+                    .Where(s => s.Container == Container.WebM && s.VideoQuality.Label.Contains(resolution))
                     .OrderByDescending(s => s.Size)
                     .First();
 
