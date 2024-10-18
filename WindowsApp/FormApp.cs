@@ -14,22 +14,22 @@ namespace WindowsApp
             _service = service;
         }
 
-        private async void Download(object sender, EventArgs e)
+        private async void DownloadVideo(object sender, EventArgs e)
         {
             var command = new DownloadVideoCommand { Url = textBoxUrlVideo.Text, Mp4 = false, Resolutiuon = "1080p" };
-            var result = string.Empty;
+            var filePath = string.Empty;
             try
             {
-                textBoxOutput.Text = string.Empty;
-                result = await _service.DownloadVideo(command);
+                textBoxOutput.Clear();
+                filePath = await _service.DownloadVideo(command);
             }
             catch
             {
             }
             finally
             {
-                textBoxOutput.Text = result;
-                textBoxUrlVideo.Text = string.Empty;
+                textBoxOutput.Text = filePath;
+                textBoxUrlVideo.Clear();
             }
         }
 
@@ -39,6 +39,25 @@ namespace WindowsApp
             {
                 FileInfo fileInfo = new FileInfo(textBoxOutput.Text);
                 MediaPlayer.Play(fileInfo);
+            }
+        }
+
+        private async void DownloadAudio(object sender, EventArgs e)
+        {
+            DownloadAudioCommand command = new DownloadAudioCommand { Url = textBoxUrlVideo.Text, Mp3 = true };
+            var filePath = string.Empty;
+            try
+            {
+                textBoxOutput.Clear();
+                filePath = await _service.DownloadAudio(command);
+            }
+            catch
+            {
+            }
+            finally 
+            { 
+                textBoxOutput.Text = filePath;
+                textBoxUrlVideo.Clear();
             }
         }
     }

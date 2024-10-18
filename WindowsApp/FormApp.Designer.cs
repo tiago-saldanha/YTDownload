@@ -30,10 +30,11 @@
         {
             labelUrlVideo = new Label();
             textBoxUrlVideo = new TextBox();
-            buttonDownload = new Button();
+            buttonDownloadVideo = new Button();
             labelOutput = new Label();
             textBoxOutput = new TextBox();
             buttonPlay = new Button();
+            buttonDownloadAudio = new Button();
             SuspendLayout();
             // 
             // labelUrlVideo
@@ -53,16 +54,16 @@
             textBoxUrlVideo.Size = new Size(748, 23);
             textBoxUrlVideo.TabIndex = 1;
             // 
-            // buttonDownload
+            // buttonDownloadVideo
             // 
-            buttonDownload.FlatStyle = FlatStyle.System;
-            buttonDownload.Location = new Point(239, 310);
-            buttonDownload.Name = "buttonDownload";
-            buttonDownload.Size = new Size(141, 34);
-            buttonDownload.TabIndex = 2;
-            buttonDownload.Text = "Download Vídeo";
-            buttonDownload.UseVisualStyleBackColor = true;
-            buttonDownload.Click += Download;
+            buttonDownloadVideo.FlatStyle = FlatStyle.System;
+            buttonDownloadVideo.Location = new Point(170, 341);
+            buttonDownloadVideo.Name = "buttonDownloadVideo";
+            buttonDownloadVideo.Size = new Size(141, 34);
+            buttonDownloadVideo.TabIndex = 2;
+            buttonDownloadVideo.Text = "Download Vídeo";
+            buttonDownloadVideo.UseVisualStyleBackColor = true;
+            buttonDownloadVideo.Click += DownloadVideo;
             // 
             // labelOutput
             // 
@@ -84,7 +85,7 @@
             // buttonPlay
             // 
             buttonPlay.FlatStyle = FlatStyle.System;
-            buttonPlay.Location = new Point(420, 310);
+            buttonPlay.Location = new Point(490, 341);
             buttonPlay.Name = "buttonPlay";
             buttonPlay.Size = new Size(141, 34);
             buttonPlay.TabIndex = 6;
@@ -92,15 +93,27 @@
             buttonPlay.UseVisualStyleBackColor = true;
             buttonPlay.Click += Play;
             // 
+            // buttonDownloadAudio
+            // 
+            buttonDownloadAudio.FlatStyle = FlatStyle.System;
+            buttonDownloadAudio.Location = new Point(329, 341);
+            buttonDownloadAudio.Name = "buttonDownloadAudio";
+            buttonDownloadAudio.Size = new Size(141, 34);
+            buttonDownloadAudio.TabIndex = 7;
+            buttonDownloadAudio.Text = "Download Audio";
+            buttonDownloadAudio.UseVisualStyleBackColor = true;
+            buttonDownloadAudio.Click += DownloadAudio;
+            // 
             // FormApp
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(buttonDownloadAudio);
             Controls.Add(buttonPlay);
             Controls.Add(textBoxOutput);
             Controls.Add(labelOutput);
-            Controls.Add(buttonDownload);
+            Controls.Add(buttonDownloadVideo);
             Controls.Add(textBoxUrlVideo);
             Controls.Add(labelUrlVideo);
             Name = "FormApp";
@@ -113,9 +126,10 @@
 
         private Label labelUrlVideo;
         private TextBox textBoxUrlVideo;
-        private Button buttonDownload;
+        private Button buttonDownloadVideo;
         private Label labelOutput;
         private TextBox textBoxOutput;
         private Button buttonPlay;
+        private Button buttonDownloadAudio;
     }
 }

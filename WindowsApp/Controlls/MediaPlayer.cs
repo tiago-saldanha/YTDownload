@@ -6,7 +6,7 @@ namespace YTDownload.App.Controlls
     {
         public static void Play(FileInfo file)
         {
-            if (file.Extension == ".webm" || file.Extension == ".mp4")
+            if (file.Extension == ".webm" || file.Extension == ".mp4" || file.Extension == ".mp3")
             {
                 try
                 {
