@@ -16,7 +16,11 @@ namespace WindowsApp
 
         private async void DownloadVideo(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(textBoxUrlVideo.Text)) MessageBox.Show($"Informe uma url válida!");
+            if (string.IsNullOrEmpty(textBoxUrlVideo.Text))
+            {
+                MessageBox.Show($"Informe uma url válida!");
+                return;
+            }
 
             var filePath = string.Empty;
             try
@@ -40,7 +44,12 @@ namespace WindowsApp
 
         private async void DownloadAudio(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(textBoxUrlVideo.Text)) MessageBox.Show($"Informe uma url válida!");
+            if (string.IsNullOrEmpty(textBoxUrlVideo.Text))
+            {
+                MessageBox.Show($"Informe uma url válida!");
+                return;
+            }
+
             var filePath = string.Empty;
             try
             {
