@@ -37,7 +37,7 @@ namespace WindowsApp
             {
                 textBoxOutput.Text = filePath;
                 textBoxUrlVideo.Clear();
-                if (checkBoxAutoPlay.Checked) Play(filePath);
+                if (checkBoxAutoPlay.Checked && !string.IsNullOrEmpty(filePath)) Play(filePath);
                 ChangeEnableButtons();
             }
         }
