@@ -6,6 +6,8 @@ using YoutubeExplode.Videos.Streams;
 using YTDownload.Application.Extensions;
 using YTDownload.Application.Interfaces;
 using YTDownload.Application.Commands;
+using YTDownload.Application.ViewModel;
+using CliWrap;
 
 namespace YTDownload.Application.Services
 {
@@ -32,7 +34,7 @@ namespace YTDownload.Application.Services
                 var audioStreamInfo = GetBestAudioStreamInfo(manifest);
                 filePath = Path.Combine(OutputDirectory, $"{video.Title.FormaterName()}.{Container.WebM}");
 
-                IVideoStreamInfo videoStreamInfo = GetVideoStreamInfo(manifest, command.Resolutiuon, command.Mp4);
+                IVideoStreamInfo videoStreamInfo = GetVideoStreamInfo(manifest, command.Resolution, command.Mp4);
 
                 var streamInfos = new IStreamInfo[] { audioStreamInfo, videoStreamInfo };
                 await _client.Videos.DownloadAsync(streamInfos, new ConversionRequestBuilder(filePath).SetFFmpegPath(_ffmpegPath).Build());
@@ -72,6 +74,68 @@ namespace YTDownload.Application.Services
             return filePath;
         }
 
+        public async Task<List<StreamManifestViewModel>> DownloadManifestInfo(string url)
+        {
+            try
+            {
+                var video = await GetVideoAsync(url);
+                var manifest = await GetManifestAsync(video.Id);
+                var streams = manifest.Streams.Select(s => new StreamManifestViewModel(s)).ToList();
+                return streams;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString(), ex);
+            }
+        }
+
+        public async Task<string> Download(DownloadCommand command)
+        {
+            var filePath = string.Empty;
+            try
+            {
+                var video = await GetVideoAsync(command.Url);
+                var manifest = await GetManifestAsync(video.Id);
+                IStreamInfo audioStreamInfo;
+                if (command.IsAudioOnly)
+                {
+                    audioStreamInfo = DownloadAudioStream(manifest, s => s.AudioCodec == command.AudioCodec && s.Container.Name == command.ContainerName);
+                    filePath = Path.Combine(OutputDirectory, $"{video.Title.FormaterName()}.{audioStreamInfo.Container.Name}");
+                    await _client.Videos.Streams.DownloadAsync(audioStreamInfo, filePath);
+                    return filePath;
+                }
+                else
+                {
+                    audioStreamInfo = DownloadAudioStream(manifest, s => s.Container.Name == command.ContainerName);
+                    filePath = Path.Combine(OutputDirectory, $"{video.Title.FormaterName()}.{audioStreamInfo.Container.Name}");
+                    IVideoStreamInfo videoStreamInfo = DownloadVideoStream(manifest, s => s.Container.ToString() == command.ContainerName && s.VideoQuality.Label.Contains(command.Resolution));
+                    var streamInfos = new IStreamInfo[] { audioStreamInfo, videoStreamInfo };
+                    await _client.Videos.DownloadAsync(streamInfos, new ConversionRequestBuilder(filePath).SetFFmpegPath(_ffmpegPath).Build());
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+            return filePath;
+        }
+
+        private IVideoStreamInfo DownloadVideoStream(StreamManifest manifest, Func<VideoOnlyStreamInfo, bool> predicate)
+        {
+            IVideoStreamInfo stream = manifest.GetVideoOnlyStreams().Where(predicate).OrderByDescending(s => s.Size).First();
+            return stream;
+        }
+
+        private IStreamInfo DownloadAudioStream(StreamManifest manifest, Func<AudioOnlyStreamInfo, bool> predicate)
+        {
+            IStreamInfo stream = manifest.GetAudioOnlyStreams().Where(predicate).OrderByDescending(s => s.Size).First();
+            if (stream == null)
+            {
+                stream = GetBestAudioStreamInfo(manifest);
+            }
+            return stream;
+        }
         private async Task<Video> GetVideoAsync(string url) => await _client.Videos.GetAsync(url);
 
         private async Task<StreamManifest> GetManifestAsync(string id) => await _client.Videos.Streams.GetManifestAsync(id);
