@@ -7,7 +7,6 @@ using YTDownload.Application.Extensions;
 using YTDownload.Application.Interfaces;
 using YTDownload.Application.Commands;
 using YTDownload.Application.ViewModel;
-using CliWrap;
 
 namespace YTDownload.Application.Services
 {

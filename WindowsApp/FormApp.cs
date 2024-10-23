@@ -1,5 +1,3 @@
-using System.IO;
-using System.Text.Json.Serialization;
 using YoutubeExplode.Common;
 using YTDownload.App.Controlls;
 using YTDownload.Application.Commands;
