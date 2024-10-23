@@ -85,6 +85,8 @@ namespace WindowsApp
                     textBoxUrlVideo.Clear();
                     if (checkBoxAutoPlay.Checked && !string.IsNullOrEmpty(filePath)) Play(filePath);
                     ChangeEnableButtons();
+
+                    if (checkBoxConverterMp3.Checked) Converter(filePath);
                 }
             }
         }
@@ -102,6 +104,17 @@ namespace WindowsApp
         }
 
         private void Play(string filePath) => MediaPlayer.Play(filePath);
+
+        private async void Converter(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                MessageBox.Show($"O arquivo({filePath}) não existe.");
+                return;
+            }
+
+            await _service.Converter(filePath);
+        }
 
         private void ChangeEnableButtons()
         {

@@ -120,6 +120,14 @@ namespace YTDownload.Application.Services
             return filePath;
         }
 
+        public async Task Converter(string filePath)
+        {
+            await Task.Run(() =>
+            {
+                _ = AudioToMp3(filePath);
+            });
+        }
+
         private IVideoStreamInfo DownloadVideoStream(StreamManifest manifest, Func<VideoOnlyStreamInfo, bool> predicate)
         {
             IVideoStreamInfo stream = manifest.GetVideoOnlyStreams().Where(predicate).OrderByDescending(s => s.Size).First();
@@ -135,6 +143,7 @@ namespace YTDownload.Application.Services
             }
             return stream;
         }
+
         private async Task<Video> GetVideoAsync(string url) => await _client.Videos.GetAsync(url);
 
         private async Task<StreamManifest> GetManifestAsync(string id) => await _client.Videos.Streams.GetManifestAsync(id);

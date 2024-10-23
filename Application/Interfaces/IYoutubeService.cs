@@ -9,5 +9,6 @@ namespace YTDownload.Application.Interfaces
         Task<string> DownloadVideo(DownloadVideoCommand command);
         Task<List<StreamManifestViewModel>> DownloadManifestInfo(string url);
         Task<string> Download(DownloadCommand command);
+        Task Converter(string filePath);
     }
 }
