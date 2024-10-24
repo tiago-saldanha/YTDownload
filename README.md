@@ -4,6 +4,9 @@
 ## Requirements
 SDK net8.0
 
+## Opções de Execução
+### 1. ASP.NET Core Web Application
+
 ## Build and Run
 
 To run this project enter the root directory and run `dotnet build` && `dotnet run`
@@ -26,27 +29,14 @@ docker build -f "C:\Users\Tiago\Source\Repos\YTDownload\YTDownload\Dockerfile" -
 docker run -dp 8080:80 -p 8081:443 -e "ASPNETCORE_ENVIRONMENT=Development" -e "ASPNETCORE_URLS=http://+:80" ytdownload:dev
 ```
 
+### 2. Windows Forms Application
+Este projeto também pode ser executado como uma aplicação de desktop Windows Forms. Basta configurar o Program.cs para iniciar a interface gráfica.
+
+### 3. Blazor WebAssembly Application
+O YTDownload também pode ser executado como uma aplicação Blazor. Para isso, configure o projeto para o ambiente de WebAssembly no Startup.cs e siga as instruções de execução como para ASP.NET Core.
+
 ## Download via Swagger
 http://localhost:8080/swagger/index.html
-
-### Download Mp3 via WSL
-Run with `vim .bashrc` and paste
-
-```bash
-function download_youtube_audio {
-        local url=$1
-        local output_file=$2
-
-        curl -X POST 'http://localhost:8080/Video/DownloadAudioMp3' \
-                -H 'accept: application/json' \
-                -H 'Content-Type: application/json' \
-                -d "{ \"url\": \"$url\" }" \
-                --output "$output_file"
-}
-```
-Run `source ~/.bashrc` to reload ~/.bashrc
-
-Ex on wsl.: download_youtube_audio "https://www.youtube.com/watch?v=dlGOiuxSzVw" "teste.mp3"
 
 If you set the environment variable ASPNETCORE_ENVIRONMENT to Develpment, [Swagger UI](https://swagger.io/tools/swagger-ui/) will be enabled, this will help you read the API documentation.
 
