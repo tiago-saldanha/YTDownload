@@ -21,9 +21,9 @@ namespace YTDownload.Application.Services
         public YoutubeService(YoutubeClient client, ILogger<YoutubeService> logger)
         {
             _client = client;
-            CreateOutputDirectory();
-            _ffmpegPath = FfmpegService.ffmpeg;
             _logger = logger;
+            _ffmpegPath = FfmpegService.ffmpeg;
+            CreateOutputDirectory();
         }
 
         public async Task<List<StreamManifestViewModel>> DownloadManifestInfo(string url)

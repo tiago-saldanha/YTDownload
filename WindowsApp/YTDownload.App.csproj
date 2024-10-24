@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Application\YTDownload.Application.csproj" />
+    <ProjectReference Include="..\YTDownload.CrossCutting\YTDownload.CrossCutting.csproj" />
   </ItemGroup>
 
   <ItemGroup>
