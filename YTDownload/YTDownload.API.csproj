@@ -11,9 +11,13 @@
 
   <ItemGroup>
     <Compile Remove="output\**" />
+    <Compile Remove="wwwroot\downloads\**" />
     <Content Remove="output\**" />
+    <Content Remove="wwwroot\downloads\**" />
     <EmbeddedResource Remove="output\**" />
+    <EmbeddedResource Remove="wwwroot\downloads\**" />
     <None Remove="output\**" />
+    <None Remove="wwwroot\downloads\**" />
   </ItemGroup>
 
   <ItemGroup>

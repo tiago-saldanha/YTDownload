@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\downloads\**" />
+    <Content Remove="wwwroot\downloads\**" />
+    <EmbeddedResource Remove="wwwroot\downloads\**" />
+    <None Remove="wwwroot\downloads\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Application\YTDownload.Application.csproj" />
+    <ProjectReference Include="..\YTDownload.CrossCutting\YTDownload.CrossCutting.csproj" />
+  </ItemGroup>
+
+</Project>
