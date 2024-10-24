@@ -38,13 +38,15 @@
             buttonDownloadInfo = new Button();
             dataGridView = new DataGridView();
             buttonDownload = new Button();
+            buttonAtualizar = new Button();
+            buttonOk = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             SuspendLayout();
             // 
             // labelUrlVideo
             // 
             labelUrlVideo.AutoSize = true;
-            labelUrlVideo.Location = new Point(24, 9);
+            labelUrlVideo.Location = new Point(24, 19);
             labelUrlVideo.Name = "labelUrlVideo";
             labelUrlVideo.Size = new Size(78, 15);
             labelUrlVideo.TabIndex = 0;
@@ -52,10 +54,10 @@
             // 
             // textBoxUrlVideo
             // 
-            textBoxUrlVideo.Location = new Point(24, 27);
+            textBoxUrlVideo.Location = new Point(24, 37);
             textBoxUrlVideo.Name = "textBoxUrlVideo";
             textBoxUrlVideo.PlaceholderText = "Digite aqui a url do vídeo...";
-            textBoxUrlVideo.Size = new Size(748, 23);
+            textBoxUrlVideo.Size = new Size(709, 23);
             textBoxUrlVideo.TabIndex = 1;
             // 
             // labelOutput
@@ -89,18 +91,18 @@
             // 
             // checkBoxConverterMp3
             // 
-            checkBoxConverterMp3.Location = new Point(614, 413);
+            checkBoxConverterMp3.Location = new Point(583, 413);
             checkBoxConverterMp3.Name = "checkBoxConverterMp3";
-            checkBoxConverterMp3.Size = new Size(160, 25);
+            checkBoxConverterMp3.Size = new Size(131, 25);
             checkBoxConverterMp3.TabIndex = 8;
             checkBoxConverterMp3.Text = "Converter Para Mp3";
             checkBoxConverterMp3.UseVisualStyleBackColor = true;
             // 
             // checkBoxAutoPlay
             // 
-            checkBoxAutoPlay.Location = new Point(518, 413);
+            checkBoxAutoPlay.Location = new Point(502, 413);
             checkBoxAutoPlay.Name = "checkBoxAutoPlay";
-            checkBoxAutoPlay.Size = new Size(79, 25);
+            checkBoxAutoPlay.Size = new Size(75, 25);
             checkBoxAutoPlay.TabIndex = 9;
             checkBoxAutoPlay.Text = "AutoPlay";
             checkBoxAutoPlay.UseVisualStyleBackColor = true;
@@ -119,9 +121,11 @@
             // dataGridView
             // 
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView.Location = new Point(24, 56);
+            dataGridView.Location = new Point(24, 66);
+            dataGridView.MultiSelect = false;
             dataGridView.Name = "dataGridView";
-            dataGridView.Size = new Size(748, 298);
+            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView.Size = new Size(748, 288);
             dataGridView.TabIndex = 11;
             // 
             // buttonDownload
@@ -135,11 +139,34 @@
             buttonDownload.UseVisualStyleBackColor = true;
             buttonDownload.Click += Download;
             // 
+            // buttonAtualizar
+            // 
+            buttonAtualizar.BackColor = SystemColors.ButtonHighlight;
+            buttonAtualizar.Image = YTDownload.App.Properties.Resources.atualizar;
+            buttonAtualizar.Location = new Point(739, 36);
+            buttonAtualizar.Name = "buttonAtualizar";
+            buttonAtualizar.Size = new Size(33, 25);
+            buttonAtualizar.TabIndex = 13;
+            buttonAtualizar.UseVisualStyleBackColor = false;
+            buttonAtualizar.Click += Atualizar;
+            // 
+            // buttonOk
+            // 
+            buttonOk.BackColor = SystemColors.ButtonHighlight;
+            buttonOk.Image = YTDownload.App.Properties.Resources.verificar_cinza;
+            buttonOk.Location = new Point(739, 409);
+            buttonOk.Name = "buttonOk";
+            buttonOk.Size = new Size(33, 25);
+            buttonOk.TabIndex = 14;
+            buttonOk.UseVisualStyleBackColor = false;
+            // 
             // FormApp
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(buttonOk);
+            Controls.Add(buttonAtualizar);
             Controls.Add(buttonDownload);
             Controls.Add(dataGridView);
             Controls.Add(buttonDownloadInfo);
@@ -161,14 +188,16 @@
         #endregion
 
         private Label labelUrlVideo;
-        private TextBox textBoxUrlVideo;
         private Label labelOutput;
+        private TextBox textBoxUrlVideo;
         private TextBox textBoxOutput;
-        private Button buttonPlay;
         private CheckBox checkBoxConverterMp3;
         private CheckBox checkBoxAutoPlay;
-        private Button buttonDownloadInfo;
         private DataGridView dataGridView;
+        private Button buttonPlay;
+        private Button buttonDownloadInfo;
         private Button buttonDownload;
+        private Button buttonAtualizar;
+        private Button buttonOk;
     }
 }

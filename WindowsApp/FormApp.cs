@@ -17,6 +17,7 @@ namespace WindowsApp
 
         private async void DownloadManifestInfo(object sender, EventArgs e)
         {
+            Ok(false);
             if (string.IsNullOrEmpty(textBoxUrlVideo.Text))
             {
                 MessageBox.Show($"Informe uma url válida!");
@@ -58,19 +59,11 @@ namespace WindowsApp
             if (dataGridView.SelectedRows.Count > 0)
             {
                 var row = dataGridView.SelectedRows[0];
-                bool isAudioOnly = false;
-                Boolean.TryParse(row.Cells["IsAudioOnly"].Value.ToString(), out isAudioOnly);
-                var containerName = row.Cells["ContainerName"].Value.ToString();
-                var audioCodec = row.Cells["AudioCodec"].Value?.ToString();
-                var resolution = row.Cells["Resolution"].Value?.ToString();
-                var videoCodec = row.Cells["VideoCodec"].Value?.ToString();
-                var url = row.Cells["Url"].Value.ToString();
-
                 var filePath = string.Empty;
                 try
                 {
                     ChangeEnableButtons();
-                    var command = new DownloadCommand(url, containerName, videoCodec, resolution, audioCodec, isAudioOnly);
+                    var command = GetCommand(row);
                     filePath = await _service.Download(command);
                     textBoxOutput.Clear();
                 }
@@ -85,7 +78,7 @@ namespace WindowsApp
                     textBoxUrlVideo.Clear();
                     if (checkBoxAutoPlay.Checked && !string.IsNullOrEmpty(filePath)) Play(filePath);
                     ChangeEnableButtons();
-
+                    Ok(true);
                     if (checkBoxConverterMp3.Checked) Converter(filePath);
                 }
             }
@@ -123,5 +116,30 @@ namespace WindowsApp
             buttonDownload.Enabled = !buttonDownload.Enabled;
         }
 
+        private DownloadCommand GetCommand(DataGridViewRow row)
+        {
+            bool isAudioOnly = false;
+            Boolean.TryParse(row.Cells["IsAudioOnly"].Value.ToString(), out isAudioOnly);
+            var containerName = row.Cells["ContainerName"].Value.ToString();
+            var audioCodec = row.Cells["AudioCodec"].Value?.ToString();
+            var resolution = row.Cells["Resolution"].Value?.ToString();
+            var videoCodec = row.Cells["VideoCodec"].Value?.ToString();
+            var url = row.Cells["Url"].Value.ToString();
+            var command = new DownloadCommand(url, containerName, videoCodec, resolution, audioCodec, isAudioOnly);
+            return command;
+        }
+
+        private void Atualizar(object sender, EventArgs e)
+        {
+            textBoxUrlVideo.Clear();
+            textBoxOutput.Clear();
+            dataGridView.DataSource = null;
+            Ok(false);
+        }
+
+        private void Ok(bool valid)
+        {
+            buttonOk.Image = valid ? Image.FromFile(Path.Combine(Environment.CurrentDirectory, "icons", "verificar-verde.png")) : Image.FromFile(Path.Combine(Environment.CurrentDirectory, "icons", "verificar-cinza.png"));
+        }
     }
 }
