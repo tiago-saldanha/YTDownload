@@ -1,4 +1,5 @@
 using YTDownload.App.DI;
+using Serilog;
 
 namespace WindowsApp
 {
@@ -7,8 +8,19 @@ namespace WindowsApp
         [STAThread]
         static void Main()
         {
-            ApplicationConfiguration.Initialize();
-            Application.Run(ContainerDI.ConfigureApp());
+            try
+            {
+                ApplicationConfiguration.Initialize();
+                Application.Run(ContainerDI.ConfigureApp());
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "A aplicação falhou.");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
     }
 }
