@@ -54,6 +54,14 @@ namespace WindowsApp
             }
         }
 
+        private void DownloadManifestInfoEnter(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                DownloadManifestInfo(sender, e);
+            }
+        }
+
         private async void Download(object sender, EventArgs e)
         {
             if (dataGridView.SelectedRows.Count > 0)
