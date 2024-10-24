@@ -30,10 +30,10 @@ docker run -dp 8080:80 -p 8081:443 -e "ASPNETCORE_ENVIRONMENT=Development" -e "A
 ```
 
 ### 2. Windows Forms Application
-Este projeto também pode ser executado como uma aplicação de desktop Windows Forms. Basta configurar o Program.cs para iniciar a interface gráfica.
+Este projeto também pode ser executado como uma aplicação de desktop Windows Forms. Basta rodar o Projeto WindowsApp o Program.cs para iniciar a interface gráfica.
 
 ### 3. Blazor WebAssembly Application
-O YTDownload também pode ser executado como uma aplicação Blazor. Para isso, configure o projeto para o ambiente de WebAssembly no Startup.cs e siga as instruções de execução como para ASP.NET Core.
+O YTDownload também pode ser executado como uma aplicação Blazor. Para isso, configure o projeto para o ambiente de WebAssembly(YTDownload.Front) no Startup.cs e siga as instruções de execução como para ASP.NET Core.
 
 ## Download via Swagger
 http://localhost:8080/swagger/index.html
