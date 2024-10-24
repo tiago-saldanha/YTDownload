@@ -14,7 +14,7 @@ namespace YTDownload.Application.Services
     public class YoutubeService : IYoutubeService
     {
         private readonly YoutubeClient _client;
-        private string OutputDirectory = Path.Combine(Directory.GetCurrentDirectory(), "output");
+        private string OutputDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "downloads");
         private readonly string _ffmpegPath;
         private readonly ILogger<YoutubeService> _logger;
 

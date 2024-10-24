@@ -7,7 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Components\Pages\Youtube\" />
+    <Compile Remove="wwwroot\downloads\**" />
+    <Content Remove="wwwroot\downloads\**" />
+    <EmbeddedResource Remove="wwwroot\downloads\**" />
+    <None Remove="wwwroot\downloads\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Application\YTDownload.Application.csproj" />
+    <ProjectReference Include="..\YTDownload.CrossCutting\YTDownload.CrossCutting.csproj" />
   </ItemGroup>
 
 </Project>
