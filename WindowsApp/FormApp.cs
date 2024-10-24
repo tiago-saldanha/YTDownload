@@ -33,13 +33,13 @@ namespace WindowsApp
                     dataGridView.DataSource = null;
                     dataGridView.DataSource = streams.Select(stream => new
                     {
-                        ContainerName = stream.Format,
+                        ContainerName = stream.ContainerName,
                         MegaBytes = Math.Round(stream.Size, 2),
                         Resolution = stream.Resolution ?? null,
                         VideoCodec = stream.VideoCodec ?? null,
                         IsAudioOnly = stream.AudioCodec != null,
                         AudioCodec = stream.AudioCodec ?? null,
-                        Url = textBoxUrlVideo.Text
+                        Url = stream.Url ?? textBoxUrlVideo.Text
                     }).ToList();
                 }
             }
@@ -84,6 +84,19 @@ namespace WindowsApp
             }
         }
 
+        private DownloadCommand GetCommand(DataGridViewRow row)
+        {
+            bool isAudioOnly = false;
+            Boolean.TryParse(row.Cells["IsAudioOnly"].Value.ToString(), out isAudioOnly);
+            var containerName = row.Cells["ContainerName"].Value.ToString();
+            var audioCodec = row.Cells["AudioCodec"].Value?.ToString();
+            var resolution = row.Cells["Resolution"].Value?.ToString();
+            var videoCodec = row.Cells["VideoCodec"].Value?.ToString();
+            var url = row.Cells["Url"].Value.ToString();
+            var command = new DownloadCommand(url, containerName, videoCodec, resolution, audioCodec, isAudioOnly);
+            return command;
+        }
+
         private void Play(object sender, EventArgs e)
         {
             ChangeEnableButtons();
@@ -114,19 +127,6 @@ namespace WindowsApp
             buttonPlay.Enabled = !buttonPlay.Enabled;
             buttonDownloadInfo.Enabled = !buttonDownloadInfo.Enabled;
             buttonDownload.Enabled = !buttonDownload.Enabled;
-        }
-
-        private DownloadCommand GetCommand(DataGridViewRow row)
-        {
-            bool isAudioOnly = false;
-            Boolean.TryParse(row.Cells["IsAudioOnly"].Value.ToString(), out isAudioOnly);
-            var containerName = row.Cells["ContainerName"].Value.ToString();
-            var audioCodec = row.Cells["AudioCodec"].Value?.ToString();
-            var resolution = row.Cells["Resolution"].Value?.ToString();
-            var videoCodec = row.Cells["VideoCodec"].Value?.ToString();
-            var url = row.Cells["Url"].Value.ToString();
-            var command = new DownloadCommand(url, containerName, videoCodec, resolution, audioCodec, isAudioOnly);
-            return command;
         }
 
         private void Atualizar(object sender, EventArgs e)
