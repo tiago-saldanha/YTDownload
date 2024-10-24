@@ -20,7 +20,7 @@ namespace YTDownload.Application.ViewModel
             Url = url;
             ContainerName = stream.Container.Name;
             Size = stream.Size.MegaBytes;
-            IsAudioOnly = stream.Container.IsAudioOnly;
+            IsAudioOnly = stream is IAudioStreamInfo audioStream;
 
             AddMedia(stream);
         }
