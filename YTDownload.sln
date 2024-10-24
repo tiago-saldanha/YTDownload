@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YTDownload.CrossCutting", "YTDownload.CrossCutting\YTDownload.CrossCutting.csproj", "{69F1CDCB-BE9E-482D-A936-5D8B0E392C0A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{1C57416B-5776-451D-B9F6-DD9DF282AD1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C57416B-5776-451D-B9F6-DD9DF282AD1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C57416B-5776-451D-B9F6-DD9DF282AD1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69F1CDCB-BE9E-482D-A936-5D8B0E392C0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69F1CDCB-BE9E-482D-A936-5D8B0E392C0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69F1CDCB-BE9E-482D-A936-5D8B0E392C0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69F1CDCB-BE9E-482D-A936-5D8B0E392C0A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

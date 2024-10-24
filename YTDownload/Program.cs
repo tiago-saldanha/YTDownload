@@ -1,8 +1,8 @@
-using YTDownload.API.Dependencies;
+using YTDownload.CrossCutting.AppDependencies;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.ConfigureServices();
+builder.Services.ProvideServices();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

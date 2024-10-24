@@ -18,11 +18,11 @@ namespace YTDownload.Application.Services
         private readonly string _ffmpegPath;
         private readonly ILogger<YoutubeService> _logger;
 
-        public YoutubeService(YoutubeClient client, string ffmpegPath, ILogger<YoutubeService> logger)
+        public YoutubeService(YoutubeClient client, ILogger<YoutubeService> logger)
         {
             _client = client;
             CreateOutputDirectory();
-            _ffmpegPath = ffmpegPath;
+            _ffmpegPath = FfmpegService.ffmpeg;
             _logger = logger;
         }
 
@@ -99,7 +99,7 @@ namespace YTDownload.Application.Services
         {
             await Task.Run(() =>
             {
-                _ = AudioToMp3(filePath);
+                _ = FfmpegService.AudioToMp3(filePath);
             });
         }
 
@@ -128,52 +128,6 @@ namespace YTDownload.Application.Services
         private void CreateOutputDirectory()
         {
             if (!Directory.Exists(OutputDirectory)) Directory.CreateDirectory(OutputDirectory);
-        }
-
-        private string AudioToMp3(string filePath)
-        {
-            var outputFilePath = Path.ChangeExtension(filePath, ".mp3");
-            _logger.LogInformation($"Iniciando a conversão do arquivo para MP3 [{filePath}].");
-
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = _ffmpegPath,
-                    Arguments = $"-i \"{filePath}\" -preset ultrafast -b:a 192k \"{outputFilePath}\" -y",
-                    UseShellExecute = true,
-                    CreateNoWindow = false,
-                }
-            };
-
-            process.Start();
-            process.WaitForExit();
-
-            _logger.LogInformation($"Finalizado a conversão do arquivo para MP3 [{filePath}].");
-
-            return outputFilePath;
-        }
-
-        private string VideoToMp4(string filePath)
-        {
-            var threadsToUse = Math.Max(1, Environment.ProcessorCount - 2);
-            var outputFilePath = Path.ChangeExtension(filePath, ".mp4");
-
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = _ffmpegPath,
-                    Arguments = $"-i \"{filePath}\" -c:v libx264 -preset ultrafast -c:a aac -b:a 128k -threads {threadsToUse} -y \"{outputFilePath}\"",
-                    UseShellExecute = true,
-                    CreateNoWindow = false,
-                }
-            };
-
-            process.Start();
-            process.WaitForExit();
-
-            return outputFilePath;
         }
     }
 }
