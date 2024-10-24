@@ -1,4 +1,4 @@
-using YTDownload.App.DI;
+using YTDownload.App.Factory;
 using Serilog;
 
 namespace WindowsApp
@@ -11,7 +11,7 @@ namespace WindowsApp
             try
             {
                 ApplicationConfiguration.Initialize();
-                Application.Run(ContainerDI.ConfigureApp());
+                Application.Run(FactoryApp.Build());
             }
             catch (Exception ex)
             {
