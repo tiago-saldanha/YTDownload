@@ -7,6 +7,7 @@ using YTDownload.Application.Extensions;
 using YTDownload.Application.Interfaces;
 using YTDownload.Application.Commands;
 using YTDownload.Application.ViewModel;
+using Microsoft.Extensions.Logging;
 
 namespace YTDownload.Application.Services
 {
@@ -15,25 +16,32 @@ namespace YTDownload.Application.Services
         private readonly YoutubeClient _client;
         private string OutputDirectory = Path.Combine(Directory.GetCurrentDirectory(), "output");
         private readonly string _ffmpegPath;
+        private readonly ILogger<YoutubeService> _logger;
 
-        public YoutubeService(YoutubeClient client, string ffmpegPath)
+        public YoutubeService(YoutubeClient client, string ffmpegPath, ILogger<YoutubeService> logger)
         {
             _client = client;
             CreateOutputDirectory();
             _ffmpegPath = ffmpegPath;
+            _logger = logger;
         }
 
         public async Task<List<StreamManifestViewModel>> DownloadManifestInfo(string url)
         {
             try
             {
+                _logger.LogInformation($"Iniciando o Download do manifesto do vídeo [{url}].");
                 var video = await GetVideoAsync(url);
+
                 var manifest = await GetManifestAsync(video.Id);
                 var streams = manifest.Streams.Select(s => new StreamManifestViewModel(s, url)).ToList();
+
+                _logger.LogInformation($"Download dos Streams realizados com sucesso [{url}]");
                 return streams;
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"Erro ao tentar baixar o manifesto do video [{url}].");
                 throw new Exception(ex.ToString(), ex);
             }
         }
@@ -44,26 +52,43 @@ namespace YTDownload.Application.Services
             try
             {
                 var video = await GetVideoAsync(command.Url);
+
+                _logger.LogInformation($"Iniciando o Download do vídeo [{video.Title.FormaterName()}].");
+
                 var manifest = await GetManifestAsync(video.Id);
                 IStreamInfo audioStreamInfo;
                 if (command.IsAudioOnly)
                 {
                     audioStreamInfo = DownloadAudioStream(manifest, s => s.AudioCodec == command.AudioCodec && s.Container.Name == command.ContainerName);
+                    _logger.LogInformation($"Download do Stream de Audio realizado com sucesso [{audioStreamInfo.Container.Name}].");
+
                     filePath = Path.Combine(OutputDirectory, $"{video.Title.FormaterName()}.{audioStreamInfo.Container.Name}");
                     await _client.Videos.Streams.DownloadAsync(audioStreamInfo, filePath);
+
+                    _logger.LogInformation($"Download do Audio realizado com sucesso [{filePath}].");
+
                     return filePath;
                 }
                 else
                 {
                     audioStreamInfo = DownloadAudioStream(manifest, s => s.Container.Name == command.ContainerName);
+                    _logger.LogInformation($"Download do Stream de Audio realizado com sucesso [{audioStreamInfo.Container.Name}].");
+
                     filePath = Path.Combine(OutputDirectory, $"{video.Title.FormaterName()}.{audioStreamInfo.Container.Name}");
                     IVideoStreamInfo videoStreamInfo = DownloadVideoStream(manifest, s => s.Container.ToString() == command.ContainerName && s.VideoQuality.Label.Contains(command.Resolution));
+                    _logger.LogInformation($"Download do Stream de Video realizado com sucesso [{videoStreamInfo.Container.Name}].");
+
                     var streamInfos = new IStreamInfo[] { audioStreamInfo, videoStreamInfo };
+                    _logger.LogInformation($"Iniciando Download do Video [{command.Url}].");
+
                     await _client.Videos.DownloadAsync(streamInfos, new ConversionRequestBuilder(filePath).SetFFmpegPath(_ffmpegPath).Build());
+
+                    _logger.LogInformation($"Download do Video realizado com sucesso [{filePath}].");
                 }
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"Erro ao tentar baixar o video [{command.Url}].");
                 return ex.ToString();
             }
 
@@ -108,6 +133,7 @@ namespace YTDownload.Application.Services
         private string AudioToMp3(string filePath)
         {
             var outputFilePath = Path.ChangeExtension(filePath, ".mp3");
+            _logger.LogInformation($"Iniciando a conversão do arquivo para MP3 [{filePath}].");
 
             var process = new Process
             {
@@ -122,6 +148,8 @@ namespace YTDownload.Application.Services
 
             process.Start();
             process.WaitForExit();
+
+            _logger.LogInformation($"Finalizado a conversão do arquivo para MP3 [{filePath}].");
 
             return outputFilePath;
         }

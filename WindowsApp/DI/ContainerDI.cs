@@ -3,6 +3,7 @@ using YoutubeExplode;
 using WindowsApp;
 using YTDownload.Application.Interfaces;
 using YTDownload.Application.Services;
+using Serilog;
 
 namespace YTDownload.App.DI
 {
@@ -10,30 +11,39 @@ namespace YTDownload.App.DI
     {
         public static FormApp ConfigureApp()
         {
-            var services = new ServiceCollection();
-            services.ConfigureServices();
-            return Start(services);
+            return new ServiceCollection()
+                .ConfigureLogging()
+                .ConfigureServices()
+                .Start();
         }
-        
+
+        private static IServiceCollection ConfigureLogging(this IServiceCollection services)
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.File("logs\\app-log.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+
+            services.AddLogging(configure => configure.AddSerilog(dispose: true));
+
+            return services;
+        }
+
         private static IServiceCollection ConfigureServices(this IServiceCollection services)
         {
-            ConfigureFFmpeg(services);
-            ConfigureYoutubeClient(services);
-            return services;
+            return services.ConfigureFFmpeg().ConfigureYoutubeClient();
         }
 
         private static IServiceCollection ConfigureFFmpeg(this IServiceCollection services)
         {
-            var ffmpeg = Environment.OSVersion.Platform == PlatformID.Unix ? "ffmpeg" : "ffmpeg.exe";
-            var ffmpegPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "lib", ffmpeg);
+            var ffmpegPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "lib", "ffmpeg.exe");
 
             if (!File.Exists(ffmpegPath))
             {
-                throw new FileNotFoundException("FFmpeg não encontrado. Certifique-se de que o ffmpeg.exe/ffmpeg está na pasta lib.");
+                throw new FileNotFoundException("FFmpeg não encontrado. Certifique-se de que o ffmpeg.exe está na pasta lib.");
             }
 
-            services.AddSingleton(ffmpegPath);
-            return services;
+            return services.AddSingleton(ffmpegPath);
         }
 
         private static IServiceCollection ConfigureYoutubeClient(this IServiceCollection services)
