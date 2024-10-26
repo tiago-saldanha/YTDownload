@@ -52,12 +52,16 @@ namespace YTDownload.Front.Components.Pages.Youtube
             var command = new DownloadCommand(stream.Url, stream.ContainerName, stream.VideoCodec, stream.Resolution, stream.AudioCodec, stream.IsAudioOnly);
             var filePath = await _service.Download(command);
 
-            if (!string.IsNullOrEmpty(filePath))
+            if (!File.Exists(filePath))
+            {
+                Message = filePath.Contains("ffmpeg") ? "Ocorreu um erro ao realizar o download do formato selecionado, por favor tente outro formato." : filePath.ToString();
+            }
+            else
             {
                 var fileUrl = $"/downloads/{Uri.EscapeDataString(Path.GetFileName(filePath))}";
                 await JSRuntime.InvokeVoidAsync("downloadFileFromPath", fileUrl);
+                Loading = false;
             }
-            Loading = false;
         }
     }
 }

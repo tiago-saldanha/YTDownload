@@ -76,6 +76,8 @@ namespace YTDownload.Application.Services
                     var streamInfos = new IStreamInfo[] { audioStreamInfo, videoStreamInfo };
                     _logger.LogInformation($"Iniciando Download do Video [{command.Url}].");
 
+                    if (File.Exists(filePath)) File.Delete(filePath);
+
                     await _client.Videos.DownloadAsync(streamInfos, new ConversionRequestBuilder(filePath).SetFFmpegPath(FfmpegService.ffmpeg).Build());
                     _logger.LogInformation($"Download do Video realizado com sucesso [{filePath}].");
                 }
