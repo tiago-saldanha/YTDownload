@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using YoutubeExplode;
+﻿using YoutubeExplode;
 using YoutubeExplode.Videos;
 using YoutubeExplode.Converter;
 using YoutubeExplode.Videos.Streams;
@@ -15,14 +14,12 @@ namespace YTDownload.Application.Services
     {
         private readonly YoutubeClient _client;
         private string OutputDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "downloads");
-        private readonly string _ffmpegPath;
         private readonly ILogger<YoutubeService> _logger;
 
         public YoutubeService(YoutubeClient client, ILogger<YoutubeService> logger)
         {
             _client = client;
             _logger = logger;
-            _ffmpegPath = FfmpegService.ffmpeg;
             CreateOutputDirectory();
         }
 
@@ -52,7 +49,6 @@ namespace YTDownload.Application.Services
             try
             {
                 var video = await GetVideoAsync(command.Url);
-
                 _logger.LogInformation($"Iniciando o Download do vídeo [{video.Title.FormaterName()}].");
 
                 var manifest = await GetManifestAsync(video.Id);
@@ -66,7 +62,6 @@ namespace YTDownload.Application.Services
                     await _client.Videos.Streams.DownloadAsync(audioStreamInfo, filePath);
 
                     _logger.LogInformation($"Download do Audio realizado com sucesso [{filePath}].");
-
                     return filePath;
                 }
                 else
@@ -81,8 +76,7 @@ namespace YTDownload.Application.Services
                     var streamInfos = new IStreamInfo[] { audioStreamInfo, videoStreamInfo };
                     _logger.LogInformation($"Iniciando Download do Video [{command.Url}].");
 
-                    await _client.Videos.DownloadAsync(streamInfos, new ConversionRequestBuilder(filePath).SetFFmpegPath(_ffmpegPath).Build());
-
+                    await _client.Videos.DownloadAsync(streamInfos, new ConversionRequestBuilder(filePath).SetFFmpegPath(FfmpegService.ffmpeg).Build());
                     _logger.LogInformation($"Download do Video realizado com sucesso [{filePath}].");
                 }
             }

@@ -5,98 +5,69 @@
 <h3>Youtube Downloader</h3>
 <p role="status">Informe a url do vídeo aqui:</p>
 
-
 <div>
     <InputText id="url" @bind-Value="Url" class="form-control" placeholder="Informe aqui a url do vídeo..." style="display: inline; margin-right: 5px; width:70%;" />
     <button class="btn btn-outline-primary" @onclick="GetManifestInfo">Obter Informações</button>
-    <button class="btn btn-outline-success" @onclick="SubmitSelection">Baixar</button>
 </div>
 <hr />
-@if (Streams.Count == 0 && Searching)
+@if (Loading)
 {
-    <p><em>Pesquisando...</em></p>
+    <p><em>@Message</em></p>
 }
 else
 {
+    <h3>Vídeos</h3>
     <table class="table table-striped">
         <thead>
             <tr>
+                <th>Formato</th>
+                <th>Video Codec</th>
+                <th>Resolução</th>
+                <th>Tamanho</th>
                 <th></th>
-                <td>Formato</td>
-                <td>Video Codec</td>
-                <td>Resolução</td>
-                <td>Tamanho</td>
-                <td>Audio</td>
-                <td>Audio Codec</td>
             </tr>
         </thead>
         <tbody>
-            @foreach (var stream in Streams)
+            @foreach (var stream in Streams.Where(s => !s.IsAudioOnly))
             {
                 <tr>
-                    <td>
-                        <input type="checkbox" @bind-value="stream.IsSelected" />
-                    </td>
                     <td>@stream.ContainerName</td>
                     <td>@stream.VideoCodec</td>
                     <td>@stream.Resolution</td>
                     <td>@stream.Size.ToString() Mb</td>
-                    <td>@stream.IsAudioOnly</td>
-                    <td>@stream.AudioCodec</td>
+                    <td>
+                        <button class="btn btn-outline-warning" @onclick="() => SubmitSelection(stream)">Baixar</button>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
-}
 
-@code {
-    private string Url { get; set; }
-    public List<StreamViewModel> Streams = new();
-    private bool Searching { get; set; }
-
-    [Inject] IJSRuntime JSRuntime { get; set; }
-
-    private async Task GetManifestInfo()
-    {
-        if (!string.IsNullOrEmpty(Url))
-        {
-            Searching = true;
-            List<StreamManifestViewModel> streams = await _service.DownloadManifestInfo(Url);
-
-            if (streams.Count > 0)
+    <hr />
+    <h3>Audios</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Formato</th>
+                <th>Tamanho</th>
+                <th>Audio</th>
+                <th>Audio Codec</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var stream in Streams.Where(s => s.IsAudioOnly))
             {
-                Streams.Clear();
-                Streams.AddRange(streams.Select(s => new StreamViewModel(s.ContainerName, s.VideoCodec, s.Resolution, s.Size, s.IsAudioOnly, s.AudioCodec, s.Url)));
+                <tr>
+                    <td>@stream.ContainerName</td>
+                    <td>@stream.Size.ToString() Mb</td>
+                    <td>@stream.IsAudioOnly</td>
+                    <td>@stream.AudioCodec</td>
+                    <td>
+                        <button class="btn btn-outline-warning" @onclick="() => SubmitSelection(stream)">Baixar</button>
+                    </td>
+                </tr>
             }
-            Searching = false;
-        }
-    }
-
-    public async Task SubmitSelection()
-    {
-        var selecteds = Streams.Where(s => s.IsSelected);
-
-        foreach (var selected in selecteds)
-        {
-            var input = Streams.Where(
-                s => s.ContainerName == selected.ContainerName &&
-                s.VideoCodec == selected.VideoCodec &&
-                s.Resolution == selected.Resolution &&
-                s.Size == selected.Size &&
-                s.AudioCodec == selected.AudioCodec)
-                .First();
-
-            if (input != null)
-            {
-                var command = new DownloadCommand(input.Url, input.ContainerName, input.VideoCodec, input.Resolution, input.AudioCodec, input.IsAudioOnly);
-                var filePath = await _service.Download(command);
-
-                if (!string.IsNullOrEmpty(filePath))
-                {
-                    var fileUrl = $"/downloads/{Uri.EscapeDataString(Path.GetFileName(filePath))}";
-                    await JSRuntime.InvokeVoidAsync("downloadFileFromPath", fileUrl);
-                }
-            }
-        }
-    }
+        </tbody>
+    </table>
 }
