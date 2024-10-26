@@ -10,7 +10,6 @@
             Size = size;
             IsAudioOnly = isAudioOnly;
             AudioCodec = audioCodec;
-            IsSelected = false;
             Url = url;
         }
 
@@ -21,6 +20,5 @@
         public bool IsAudioOnly { get; set; }
         public string AudioCodec { get; set; }
         public string Url { get; set; }
-        public bool IsSelected { get; set; }
     }
 }
