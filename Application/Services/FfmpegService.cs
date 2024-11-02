@@ -8,11 +8,8 @@ namespace YTDownload.Application.Services
 
         private static string Get()
         {
-            var ffmpeg = Environment.OSVersion.Platform == PlatformID.Unix ? "ffmpeg" : "ffmpeg.exe";
-
-            var application = AppDomain.CurrentDomain.Load("YTDownload.Application");
-
-            var ffmpegPath = Path.Combine(AppContext.BaseDirectory, "lib", ffmpeg);
+            string ffmpeg = Environment.OSVersion.Platform == PlatformID.Unix ? "ffmpeg" : "ffmpeg.exe";
+            string ffmpegPath = Path.Combine(AppContext.BaseDirectory, "lib", ffmpeg);
 
             if (!File.Exists(ffmpegPath))
             {
@@ -23,9 +20,9 @@ namespace YTDownload.Application.Services
 
         public static string AudioToMp3(string filePath)
         {
-            var outputFilePath = Path.ChangeExtension(filePath, ".mp3");
+            string outputFilePath = Path.ChangeExtension(filePath, ".mp3");
 
-            var process = new Process
+            Process process = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
@@ -44,10 +41,10 @@ namespace YTDownload.Application.Services
 
         private static string VideoToMp4(string filePath)
         {
-            var threadsToUse = Math.Max(1, Environment.ProcessorCount - 2);
-            var outputFilePath = Path.ChangeExtension(filePath, ".mp4");
+            int threadsToUse = Math.Max(1, Environment.ProcessorCount - 2);
+            string outputFilePath = Path.ChangeExtension(filePath, ".mp4");
 
-            var process = new Process
+            Process process = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {

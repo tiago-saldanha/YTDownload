@@ -1,32 +1,12 @@
-﻿namespace YTDownload.Application.Extensions
+﻿using System.Text.RegularExpressions;
+
+namespace YTDownload.Application.Extensions
 {
     public static class StringExtensions
     {
         public static string FormaterName(this string input)
         {
-            if (string.IsNullOrEmpty(input)) return input;
-            return input
-                .Replace("/", "")
-                .Replace("|", "")
-                .Replace("^", "")
-                .Replace("!", "")
-                .Replace("@", "")
-                .Replace("#", "")
-                .Replace("$", "")
-                .Replace("%", "")
-                .Replace("&", "")
-                .Replace("*", "")
-                .Replace("(", "")
-                .Replace(")", "")
-                .Replace("+", "")
-                .Replace("=", "")
-                .Replace("{", "")
-                .Replace("}", "")
-                .Replace("[", "")
-                .Replace("]", "")
-                .Replace(";", "")
-                .Replace(":", "")
-                .Replace("/", "");
+            return Regex.Replace(input, @"[^a-zA-Z0-9\s\.\-]", "");            
         }
     }
 }

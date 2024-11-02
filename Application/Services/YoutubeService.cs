@@ -28,10 +28,10 @@ namespace YTDownload.Application.Services
             try
             {
                 _logger.LogInformation($"Iniciando o Download do manifesto do vídeo [{url}].");
-                var video = await GetVideoAsync(url);
+                Video video = await GetVideoAsync(url);
 
-                var manifest = await GetManifestAsync(video.Id);
-                var streams = manifest.Streams.Select(s => new StreamManifestViewModel(s, url)).ToList();
+                StreamManifest manifest = await GetManifestAsync(video.Id);
+                List<StreamManifestViewModel> streams = manifest.Streams.Select(s => new StreamManifestViewModel(s, url)).ToList();
 
                 _logger.LogInformation($"Download dos Streams realizados com sucesso [{url}]");
                 return streams;
@@ -45,13 +45,13 @@ namespace YTDownload.Application.Services
 
         public async Task<string> Download(DownloadCommand command)
         {
-            var filePath = string.Empty;
+            string filePath = string.Empty;
             try
             {
-                var video = await GetVideoAsync(command.Url);
+                Video video = await GetVideoAsync(command.Url);
                 _logger.LogInformation($"Iniciando o Download do vídeo [{video.Title.FormaterName()}].");
 
-                var manifest = await GetManifestAsync(video.Id);
+                StreamManifest manifest = await GetManifestAsync(video.Id);
                 IStreamInfo audioStreamInfo;
                 if (command.IsAudioOnly)
                 {
@@ -73,7 +73,7 @@ namespace YTDownload.Application.Services
                     IVideoStreamInfo videoStreamInfo = DownloadVideoStream(manifest, s => s.Container.ToString() == command.ContainerName && s.VideoQuality.Label.Contains(command.Resolution));
                     _logger.LogInformation($"Download do Stream de Video realizado com sucesso [{videoStreamInfo.Container.Name}].");
 
-                    var streamInfos = new IStreamInfo[] { audioStreamInfo, videoStreamInfo };
+                    IStreamInfo[] streamInfos = { audioStreamInfo, videoStreamInfo };
                     _logger.LogInformation($"Iniciando Download do Video [{command.Url}].");
 
                     if (File.Exists(filePath)) File.Delete(filePath);
