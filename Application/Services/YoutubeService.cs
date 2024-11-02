@@ -31,7 +31,7 @@ namespace YTDownload.Application.Services
                 Video video = await GetVideoAsync(url);
 
                 StreamManifest manifest = await GetManifestAsync(video.Id);
-                List<StreamManifestViewModel> streams = manifest.Streams.Select(s => new StreamManifestViewModel(s, url)).ToList();
+                List<StreamManifestViewModel> streams = manifest.Streams.Select(s => StreamManifestViewModel.Create(s, url)).ToList();
 
                 _logger.LogInformation($"Download dos Streams realizados com sucesso [{url}]");
                 return streams;
