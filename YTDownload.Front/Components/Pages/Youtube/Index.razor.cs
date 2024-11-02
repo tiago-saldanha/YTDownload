@@ -31,7 +31,7 @@ namespace YTDownload.Front.Components.Pages.Youtube
                 if (streams.Any() && streams.Count > 0)
                 {
                     Streams.Clear();
-                    Streams.AddRange(streams.Select(s => new StreamViewModel(s.ContainerName, s.VideoCodec, s.Resolution, s.Size, s.IsAudioOnly, s.AudioCodec, s.Url)));
+                    Streams.AddRange(streams.Select(StreamViewModel.Create));
                     Loading = false;
                 }
                 else
@@ -41,7 +41,7 @@ namespace YTDownload.Front.Components.Pages.Youtube
             }
             catch (Exception ex)
             {
-                Message = $"Erro: {ex.InnerException.Message}";
+                Message = $"Erro: {ex.InnerException.Message ?? ex.Message}";
             }
         }
 
@@ -49,8 +49,8 @@ namespace YTDownload.Front.Components.Pages.Youtube
         {
             Message = "Baixando...";
             Loading = true;
-            var command = new DownloadCommand(stream.Url, stream.ContainerName, stream.VideoCodec, stream.Resolution, stream.AudioCodec, stream.IsAudioOnly);
-            var filePath = await _service.Download(command);
+            DownloadCommand command = new(stream.Url, stream.ContainerName, stream.VideoCodec, stream.Resolution, stream.AudioCodec, stream.IsAudioOnly);
+            string filePath = await _service.Download(command);
 
             if (!File.Exists(filePath))
             {
@@ -58,7 +58,7 @@ namespace YTDownload.Front.Components.Pages.Youtube
             }
             else
             {
-                var fileUrl = $"/downloads/{Uri.EscapeDataString(Path.GetFileName(filePath))}";
+                string fileUrl = $"/downloads/{Uri.EscapeDataString(Path.GetFileName(filePath))}";
                 await JSRuntime.InvokeVoidAsync("downloadFileFromPath", fileUrl);
                 Loading = false;
             }
