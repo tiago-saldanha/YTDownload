@@ -49,7 +49,8 @@ namespace YTDownload.Application.Services
             try
             {
                 Video video = await GetVideoAsync(command.Url);
-                _logger.LogInformation($"Iniciando o Download do vídeo [{video.Title.FormaterName()}].");
+                var title = video.Title.FormaterName();
+                _logger.LogInformation($"Iniciando o Download do vídeo [{title}].");
 
                 StreamManifest manifest = await GetManifestAsync(video.Id);
                 IStreamInfo audioStreamInfo;
@@ -58,7 +59,7 @@ namespace YTDownload.Application.Services
                     audioStreamInfo = DownloadAudioStream(manifest, s => s.AudioCodec == command.AudioCodec && s.Container.Name == command.ContainerName);
                     _logger.LogInformation($"Download do Stream de Audio realizado com sucesso [{audioStreamInfo.Container.Name}].");
 
-                    filePath = Path.Combine(OutputDirectory, $"{video.Title.FormaterName()}.{audioStreamInfo.Container.Name}");
+                    filePath = Path.Combine(OutputDirectory, $"{title}.{audioStreamInfo.Container.Name}");
                     await _client.Videos.Streams.DownloadAsync(audioStreamInfo, filePath);
 
                     _logger.LogInformation($"Download do Audio realizado com sucesso [{filePath}].");
@@ -69,7 +70,7 @@ namespace YTDownload.Application.Services
                     audioStreamInfo = DownloadAudioStream(manifest, s => s.Container.Name == command.ContainerName);
                     _logger.LogInformation($"Download do Stream de Audio realizado com sucesso [{audioStreamInfo.Container.Name}].");
 
-                    filePath = Path.Combine(OutputDirectory, $"{video.Title.FormaterName()}.{audioStreamInfo.Container.Name}");
+                    filePath = Path.Combine(OutputDirectory, $"{title}.{audioStreamInfo.Container.Name}");
                     IVideoStreamInfo videoStreamInfo = DownloadVideoStream(manifest, s => s.Container.ToString() == command.ContainerName && s.VideoQuality.Label.Contains(command.Resolution));
                     _logger.LogInformation($"Download do Stream de Video realizado com sucesso [{videoStreamInfo.Container.Name}].");
 
