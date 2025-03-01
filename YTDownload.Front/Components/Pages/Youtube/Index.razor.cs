@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using YTDownload.Application.Commands;
-using YTDownload.Application.ViewModel;
 using YTDownload.Front.Models;
 
 namespace YTDownload.Front.Components.Pages.Youtube
@@ -27,8 +26,8 @@ namespace YTDownload.Front.Components.Pages.Youtube
 
             try
             {
-                List<StreamManifestViewModel> streams = await _service.DownloadManifestInfo(Url);
-                if (streams.Any() && streams.Count > 0)
+                var streams = await _service.DownloadManifestInfo(Url);
+                if (streams.Count != 0 && streams.Count > 0)
                 {
                     Streams.Clear();
                     Streams.AddRange(streams.Select(StreamViewModel.Create));

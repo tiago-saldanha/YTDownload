@@ -18,7 +18,7 @@ namespace YTDownload.Application.Services
             return ffmpegPath;
         }
 
-        public static string AudioToMp3(string filePath)
+        public static string ConvertAudioToMp3(string filePath)
         {
             string outputFilePath = Path.ChangeExtension(filePath, ".mp3");
 
@@ -39,7 +39,7 @@ namespace YTDownload.Application.Services
             return outputFilePath;
         }
 
-        private static string VideoToMp4(string filePath)
+        private static string ConvertVideoToMp4(string filePath)
         {
             int threadsToUse = Math.Max(1, Environment.ProcessorCount - 2);
             string outputFilePath = Path.ChangeExtension(filePath, ".mp4");
