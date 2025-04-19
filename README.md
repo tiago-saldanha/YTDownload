@@ -1,49 +1,100 @@
-## YTDownload - ASP.NET Core Project
- Project to download videos and audio from youtube using this [library](https://github.com/Tyrrrz/YoutubeExplode) and [ffmpeg](https://www.ffmpeg.org).
 
-## Requirements
-SDK net8.0
+# 📺 YTDownload - Projeto ASP.NET Core
 
-## Opções de Execução
-### 1. ASP.NET Core Web Application
+Projeto para download de vídeos e áudios do YouTube utilizando a biblioteca [YoutubeExplode](https://github.com/Tyrrrz/YoutubeExplode) e o [ffmpeg](https://www.ffmpeg.org).
 
-## Build and Run
+---
 
-To run this project enter the root directory and run `dotnet build` && `dotnet run`
+## ✅ Requisitos
 
-## Run With `docker compose`
+- [.NET SDK 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+- Docker (opcional)
 
-Enter the root directory and run
+---
 
-1 - Build the updated image aspnet-core `docker compose build`
+## 🚀 Opções de Execução
 
-2 - Run docker-compose.yml `docker compose up -d`
+### 1. Aplicação ASP.NET Core Web
 
-## How to build and start a image exposure on port 8080 for HTTP
+#### 🔧 Build e Execução
+
+No diretório raiz do projeto, execute:
+
+```bash
+dotnet build && dotnet run
+```
+
+---
+
+### 2. Aplicação Windows Forms
+
+Também é possível executar como uma aplicação desktop:
+
+- Abra a solução no Visual Studio
+- Rode o projeto `WindowsApp`
+- Execute o `Program.cs` para iniciar a interface gráfica
+
+---
+
+### 3. Aplicação Blazor WebAssembly
+
+O YTDownload pode rodar como uma aplicação Blazor WebAssembly:
+
+- Configure o projeto `YTDownload.Front` no ambiente WebAssembly no `Startup.cs`
+- Siga as mesmas instruções de execução da aplicação ASP.NET Core
+
+---
+
+## 🐳 Execução com Docker
+
+### 🔨 Build da imagem com `docker compose`
+
+No diretório raiz, execute:
+
+```bash
+docker compose build
+docker compose up -d
+```
+
+---
+
+### 🌐 Build manual da imagem com Docker
+
 ```bash
 docker build -f "C:\Users\Tiago\Source\Repos\YTDownload\YTDownload\Dockerfile" -t ytdownload:dev "C:\Users\Tiago\Source\Repos\YTDownload"
 ```
 
-## Run with `docker run`
+---
+
+### ▶️ Executar com `docker run`
+
 ```bash
-docker run -dp 8080:80 -p 8081:443 -e "ASPNETCORE_ENVIRONMENT=Development" -e "ASPNETCORE_URLS=http://+:80" ytdownload:dev
+docker run -dp 8080:80 -p 8081:443 \
+  -e "ASPNETCORE_ENVIRONMENT=Development" \
+  -e "ASPNETCORE_URLS=http://+:80" \
+  ytdownload:dev
 ```
 
-### 2. Windows Forms Application
-Este projeto também pode ser executado como uma aplicação de desktop Windows Forms. Basta rodar o Projeto WindowsApp o Program.cs para iniciar a interface gráfica.
+---
 
-### 3. Blazor WebAssembly Application
-O YTDownload também pode ser executado como uma aplicação Blazor. Para isso, configure o projeto para o ambiente de WebAssembly(YTDownload.Front) no Startup.cs e siga as instruções de execução como para ASP.NET Core.
+## 📘 Documentação via Swagger
 
-## Download via Swagger
-http://localhost:8080/swagger/index.html
+- Acesse: [http://localhost:8080/swagger/index.html](http://localhost:8080/swagger/index.html)
 
-If you set the environment variable ASPNETCORE_ENVIRONMENT to Develpment, [Swagger UI](https://swagger.io/tools/swagger-ui/) will be enabled, this will help you read the API documentation.
+Caso a variável de ambiente `ASPNETCORE_ENVIRONMENT` esteja definida como `Development`, a interface [Swagger UI](https://swagger.io/tools/swagger-ui/) estará habilitada para facilitar a exploração da API.
 
-You can also set the environment variable ASPNETCORE_ENVIRONMENT for Production to disable [Swagger UI](https://swagger.io/tools/swagger-ui/).
+Para ambientes de produção, defina `ASPNETCORE_ENVIRONMENT=Production` para desativar o Swagger.
 
-Try in browser: http://localhost:8080/swagger/index.html
+---
 
-## Licença
+## 📄 Licença
 
-Este projeto está licenciado sob a Licença LGPL - veja o arquivo [LICENSE](License.txt) para detalhes.
+Este projeto está licenciado sob a Licença **LGPL**. Consulte o arquivo [LICENSE](License.txt) para mais detalhes.
+
+---
+
+## 👨‍💻 Desenvolvido por
+
+Tiago (YTDownload)
+
+---
