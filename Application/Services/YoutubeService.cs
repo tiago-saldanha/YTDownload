@@ -1,5 +1,4 @@
 ﻿using YoutubeExplode;
-using YoutubeExplode.Videos;
 using YoutubeExplode.Converter;
 using YoutubeExplode.Videos.Streams;
 using YTDownload.Application.Extensions;
@@ -13,7 +12,7 @@ namespace YTDownload.Application.Services
     public class YoutubeService : IYoutubeService
     {
         private readonly YoutubeClient _client;
-        private string OutputDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "downloads");
+        private readonly string OutputDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "downloads");
         private readonly ILogger<YoutubeService> _logger;
 
         public YoutubeService(YoutubeClient client, ILogger<YoutubeService> logger)
@@ -23,7 +22,7 @@ namespace YTDownload.Application.Services
             CreateOutputDirectory();
         }
 
-        public async Task<List<StreamManifestViewModel>> DownloadManifestInfo(string url)
+        public async Task<IEnumerable<StreamManifestViewModel>> DownloadManifest(string url)
         {
             try
             {
@@ -31,7 +30,7 @@ namespace YTDownload.Application.Services
                 var video = await _client.Videos.GetAsync(url);
 
                 var manifest = await _client.Videos.Streams.GetManifestAsync(video.Id);
-                var streams = manifest.Streams.Select(s => StreamManifestViewModel.Create(s, url)).ToList();
+                var streams = manifest.Streams.Select(stream => StreamManifestViewModel.Create(stream, url)).ToList();
 
                 _logger.LogInformation($"Download dos Streams realizados com sucesso [{url}]");
                 return streams;
@@ -39,7 +38,7 @@ namespace YTDownload.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Erro ao tentar baixar o manifesto do video [{url}].");
-                throw new Exception(ex.ToString(), ex);
+                throw;
             }
         }
 
@@ -61,52 +60,46 @@ namespace YTDownload.Application.Services
             }
         }
 
-        public async Task Converter(string filePath)
-        {
-            await Task.Run(() =>
-            {
-                _ = FfmpegService.ConvertAudioToMp3(filePath);
-            });
-        }
+        public async Task Converter(string filePath) => await Task.Run(() => FfmpegService.ConvertToMp3(filePath));
 
-        private IVideoStreamInfo DownloadVideoStream(StreamManifest manifest, Func<VideoOnlyStreamInfo, bool> predicate) => 
-            manifest.GetVideoOnlyStreams().Where(predicate).OrderByDescending(s => s.Size).First();
+        private IVideoStreamInfo DownloadVideoStream(StreamManifest manifest, Func<VideoOnlyStreamInfo, bool> predicate) 
+            => manifest.GetVideoOnlyStreams().Where(predicate).OrderByDescending(s => s.Size).First();
 
-        private IStreamInfo DownloadAudioStream(StreamManifest manifest, Func<AudioOnlyStreamInfo, bool> predicate) => 
-             manifest.GetAudioOnlyStreams().Where(predicate).OrderByDescending(s => s.Size).First() ?? GetBestAudioStreamInfo(manifest);
+        private IStreamInfo DownloadAudioStream(StreamManifest manifest, Func<AudioOnlyStreamInfo, bool> predicate) 
+            => manifest.GetAudioOnlyStreams().Where(predicate).OrderByDescending(s => s.Size).First() ?? GetBestAudioStreamInfo(manifest);
 
         private IStreamInfo GetBestAudioStreamInfo(StreamManifest manifest) => manifest.GetAudioStreams().GetWithHighestBitrate();
 
         private async Task<string> DownloadVideo(StreamManifest manifest, DownloadCommand command, string title)
         {
-            var audioStreamInfo = DownloadAudioStream(manifest, s => s.Container.Name == command.ContainerName);
-            _logger.LogInformation($"Download do Stream de Audio realizado com sucesso [{audioStreamInfo.Container.Name}].");
+            var audioStream = DownloadAudioStream(manifest, s => s.Container.Name == command.ContainerName);
+            _logger.LogInformation($"Download do Stream de Audio realizado com sucesso [{audioStream.Container.Name}].");
 
-            var filePath = Path.Combine(OutputDirectory, $"{title}.{audioStreamInfo.Container.Name}");
-            var videoStreamInfo = DownloadVideoStream(manifest, s => s.Container.ToString() == command.ContainerName && s.VideoQuality.Label.Contains(command.Resolution));
-            _logger.LogInformation($"Download do Stream de Video realizado com sucesso [{videoStreamInfo.Container.Name}].");
+            var file = Path.Combine(OutputDirectory, $"{title}.{audioStream.Container.Name}");
+            var videoStream = DownloadVideoStream(manifest, s => s.Container.ToString() == command.ContainerName && s.VideoQuality.Label.Contains(command.Resolution));
+            _logger.LogInformation($"Download do Stream de Video realizado com sucesso [{videoStream.Container.Name}].");
 
-            IStreamInfo[] streamInfos = { audioStreamInfo, videoStreamInfo };
+            var streams = new IStreamInfo[2] { audioStream, videoStream };
             _logger.LogInformation($"Iniciando Download do Video [{command.Url}].");
 
-            if (File.Exists(filePath)) File.Delete(filePath);
+            if (File.Exists(file)) File.Delete(file);
 
-            await _client.Videos.DownloadAsync(streamInfos, new ConversionRequestBuilder(filePath).SetFFmpegPath(FfmpegService.ffmpeg).Build());
-            _logger.LogInformation($"Download do Video realizado com sucesso [{filePath}].");
+            await _client.Videos.DownloadAsync(streams, new ConversionRequestBuilder(file).SetFFmpegPath(FfmpegService.Path).Build());
+            _logger.LogInformation($"Download do Video realizado com sucesso [{file}].");
 
-            return filePath;
+            return file;
         }
 
         private async Task<string> DownloadAudio(StreamManifest manifest, DownloadCommand command, string title)
         {
-            var audioStreamInfo = DownloadAudioStream(manifest, s => s.AudioCodec == command.AudioCodec && s.Container.Name == command.ContainerName);
-            _logger.LogInformation($"Download do Stream de Audio realizado com sucesso [{audioStreamInfo.Container.Name}].");
+            var audioStream = DownloadAudioStream(manifest, s => s.AudioCodec == command.AudioCodec && s.Container.Name == command.ContainerName);
+            _logger.LogInformation($"Download do Stream de Audio realizado com sucesso [{audioStream.Container.Name}].");
 
-            var filePath = Path.Combine(OutputDirectory, $"{title}.{audioStreamInfo.Container.Name}");
-            await _client.Videos.Streams.DownloadAsync(audioStreamInfo, filePath);
+            var file = Path.Combine(OutputDirectory, $"{title}.{audioStream.Container.Name}");
+            await _client.Videos.Streams.DownloadAsync(audioStream, file);
 
-            _logger.LogInformation($"Download do Audio realizado com sucesso [{filePath}].");
-            return filePath;
+            _logger.LogInformation($"Download do Audio realizado com sucesso [{file}].");
+            return file;
         }
 
         private void CreateOutputDirectory()

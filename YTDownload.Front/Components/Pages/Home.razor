@@ -1,4 +1,12 @@
 ﻿@page "/"
+@inject NavigationManager Navigation;
+
+@code{
+    protected override async Task OnInitializedAsync()
+    {
+        Navigation.NavigateTo("/youtube");
+    }
+}
 
 <PageTitle>Home</PageTitle>
 

@@ -7,12 +7,9 @@ namespace YTDownload.CrossCutting.AppDependencies
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection ProvideServices(this IServiceCollection services)
-        {
-            return services.YoutubeClient();
-        }
+        public static IServiceCollection ProvideServices(this IServiceCollection services) => services.ConfigureYoutubeClient();
 
-        private static IServiceCollection YoutubeClient(this IServiceCollection services)
+        private static IServiceCollection ConfigureYoutubeClient(this IServiceCollection services)
         {
             services.AddSingleton<YoutubeClient>();
             services.AddScoped<IYoutubeService, YoutubeService>();

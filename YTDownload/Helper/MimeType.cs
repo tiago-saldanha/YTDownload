@@ -6,10 +6,9 @@ namespace YTDownload.API.Helper
     {
         public static string GetContentType(string filePath)
         {
-            string contentType = string.Empty;
-            FileExtensionContentTypeProvider provider = new FileExtensionContentTypeProvider();
+            var provider = new FileExtensionContentTypeProvider();
 
-            if (!provider.TryGetContentType(Path.GetFileName(filePath), out contentType))
+            if (!provider.TryGetContentType(Path.GetFileName(filePath), out string? contentType))
             {
                 contentType = "application/octet-stream";
             }

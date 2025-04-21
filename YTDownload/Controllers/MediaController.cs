@@ -7,23 +7,16 @@ namespace YTDownload.API.Controllers
 {
     [ApiController]
     [Route("[controller]/[Action]")]
-    public class MediaController : ControllerBase
+    public class MediaController(IYoutubeService _service) : ControllerBase
     {
-        private readonly IYoutubeService _service;
-
-        public MediaController(IYoutubeService service)
-        {
-            _service = service;
-        }
-
         [HttpPost]
         public async Task<IActionResult> Download([FromBody] DownloadCommand command)
         {
             try
             {
-                var filePath = await _service.Download(command);
-                var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-                return File(fileStream, MimeType.GetContentType(filePath), Path.GetFileName(filePath));
+                var path = await _service.Download(command);
+                var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
+                return File(stream, MimeType.GetContentType(path), Path.GetFileName(path));
             }
             catch (Exception ex)
             {

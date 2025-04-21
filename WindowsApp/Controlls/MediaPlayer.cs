@@ -4,16 +4,16 @@ namespace YTDownload.App.Controlls
 {
     public static class MediaPlayer
     {
-        public static void Play(string filePath)
+        public static void Play(string path)
         {
-            FileInfo file = new FileInfo(filePath);
+            var file = new FileInfo(path);
             if (!file.Exists) MessageBox.Show($"Arquivo inválido!");
 
             if (file.Extension == ".webm" || file.Extension == ".mp4" || file.Extension == ".mp3")
             {
                 try
                 {
-                    Process process = new Process
+                    var process = new Process
                     {
                         StartInfo = new ProcessStartInfo
                         {

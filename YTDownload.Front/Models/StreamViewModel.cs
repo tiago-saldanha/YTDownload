@@ -2,8 +2,30 @@
 
 namespace YTDownload.Front.Models
 {
-    public class StreamViewModel
+    public readonly record struct StreamViewModel
     {
+        public string ContainerName { get; }
+        public string VideoCodec { get; }
+        public string Resolution { get; }
+        public double Size { get; }
+        public bool IsAudioOnly { get; }
+        public string AudioCodec { get; }
+        public string Url { get; }
+        public string DisplaySize
+        {
+            get
+            {
+                if (Size > 1240)
+                {
+                    return $"{Size / 1024 :0.##} GB";
+                }
+                else
+                {
+                    return $"{Size:0.##} MB";
+                }
+            }
+        }
+
         private StreamViewModel(string containerName, string videoCodec, string resolution, double size, bool isAudioOnly, string audioCodec, string url)
         {
             ContainerName = containerName;
@@ -15,17 +37,6 @@ namespace YTDownload.Front.Models
             Url = url;
         }
 
-        public static StreamViewModel Create(StreamManifestViewModel stream)
-        {
-            return new StreamViewModel(stream.ContainerName, stream.VideoCodec, stream.Resolution, stream.Size, stream.IsAudioOnly, stream.AudioCodec, stream.Url);
-        }
-
-        public string ContainerName { get; set; }
-        public string VideoCodec { get; set; }
-        public string Resolution { get; set; }
-        public double Size { get; set; }
-        public bool IsAudioOnly { get; set; }
-        public string AudioCodec { get; set; }
-        public string Url { get; set; }
+        public static StreamViewModel Create(StreamManifestViewModel stream) => new (stream.ContainerName, stream.VideoCodec, stream.Resolution, stream.Size, stream.IsAudioOnly, stream.AudioCodec, stream.Url);
     }
 }
