@@ -7,15 +7,9 @@ namespace YTDownload.App.Factory
 {
     public static class FactoryApp
     {
-        public static FormApp Build()
-        {
-            return new ServiceCollection()
-                .Logging()
-                .ProvideServices()
-                .Start();
-        }
+        public static FormApp Build() => new ServiceCollection().ConfigureLogging().ProvideServices().Start();
 
-        private static IServiceCollection Logging(this IServiceCollection services)
+        private static IServiceCollection ConfigureLogging(this IServiceCollection services)
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
@@ -23,16 +17,9 @@ namespace YTDownload.App.Factory
                 .CreateLogger();
 
             services.AddLogging(configure => configure.AddSerilog(dispose: true));
-
             return services;
         }
 
-        private static FormApp Start(this IServiceCollection services)
-        {
-            services.AddScoped<FormApp>();
-            var serviceProvider = services.BuildServiceProvider();
-            var mainForm = serviceProvider.GetRequiredService<FormApp>();
-            return mainForm;
-        }
+        private static FormApp Start(this IServiceCollection services) => services.AddScoped<FormApp>().BuildServiceProvider().GetRequiredService<FormApp>();
     }
 }

@@ -26,8 +26,8 @@ namespace YTDownload.Front.Components.Pages.Youtube
 
             try
             {
-                var streams = await _service.DownloadManifestInfo(Url);
-                if (streams.Count != 0 && streams.Count > 0)
+                var streams = await _service.DownloadManifest(Url);
+                if (streams.Any())
                 {
                     Streams.Clear();
                     Streams.AddRange(streams.Select(StreamViewModel.Create));
@@ -48,16 +48,16 @@ namespace YTDownload.Front.Components.Pages.Youtube
         {
             Message = "Baixando...";
             Loading = true;
-            DownloadCommand command = new(stream.Url, stream.ContainerName, stream.VideoCodec, stream.Resolution, stream.AudioCodec, stream.IsAudioOnly);
-            string filePath = await _service.Download(command);
+            var command = new DownloadCommand(stream.Url, stream.ContainerName, stream.VideoCodec, stream.Resolution, stream.AudioCodec, stream.IsAudioOnly);
+            var file = await _service.Download(command);
 
-            if (!File.Exists(filePath))
+            if (!File.Exists(file))
             {
-                Message = filePath.Contains("ffmpeg") ? "Ocorreu um erro ao realizar o download do formato selecionado, por favor tente outro formato." : filePath.ToString();
+                Message = file.Contains("ffmpeg") ? "Ocorreu um erro ao realizar o download do formato selecionado, por favor tente outro formato." : file.ToString();
             }
             else
             {
-                string fileUrl = $"/downloads/{Uri.EscapeDataString(Path.GetFileName(filePath))}";
+                string fileUrl = $"/downloads/{Uri.EscapeDataString(Path.GetFileName(file))}";
                 await JSRuntime.InvokeVoidAsync("downloadFileFromPath", fileUrl);
                 Loading = false;
             }

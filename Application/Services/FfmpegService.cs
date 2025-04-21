@@ -4,30 +4,48 @@ namespace YTDownload.Application.Services
 {
     public static class FfmpegService
     {
-        public static string ffmpeg = Get();
+        public static string Path = Get();
 
         private static string Get()
         {
-            string ffmpeg = Environment.OSVersion.Platform == PlatformID.Unix ? "ffmpeg" : "ffmpeg.exe";
-            string ffmpegPath = Path.Combine(AppContext.BaseDirectory, "lib", ffmpeg);
-
-            if (!File.Exists(ffmpegPath))
-            {
-                throw new FileNotFoundException("FFmpeg não encontrado. Certifique-se de que o ffmpeg.exe/ffmpeg está na pasta lib.");
-            }
-            return ffmpegPath;
+            var ffmpeg = Environment.OSVersion.Platform == PlatformID.Unix ? "ffmpeg" : "ffmpeg.exe";
+            var path = System.IO.Path.Combine(AppContext.BaseDirectory, "lib", ffmpeg);
+            if (!File.Exists(path)) throw new FileNotFoundException("FFmpeg não encontrado. Certifique-se de que o ffmpeg.exe/ffmpeg está na pasta lib.");
+            return path;
         }
 
-        public static string ConvertAudioToMp3(string filePath)
+        public static string ConvertToMp3(string file)
         {
-            string outputFilePath = Path.ChangeExtension(filePath, ".mp3");
+            var output = System.IO.Path.ChangeExtension(file, ".mp3");
 
-            Process process = new Process
+            var process = new Process
+            {
+               StartInfo = new ProcessStartInfo
+               {
+                   FileName = Path,
+                   Arguments = $"-i \"{file}\" -preset ultrafast -b:a 192k \"{output}\" -y",
+                   UseShellExecute = true,
+                   CreateNoWindow = false
+               }
+            };
+
+            process.Start();
+            process.WaitForExit();
+
+            return output;
+        }
+
+        private static string ConvertToMp4(string file)
+        {
+            var threads = Math.Max(1, Environment.ProcessorCount - 2);
+            var output = System.IO.Path.ChangeExtension(file, ".mp4");
+
+            var process = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = ffmpeg,
-                    Arguments = $"-i \"{filePath}\" -preset ultrafast -b:a 192k \"{outputFilePath}\" -y",
+                    FileName = Path,
+                    Arguments = $"-i \"{file}\" -c:v libx264 -preset ultrafast -c:a aac -b:a 128k -threads {threads} -y \"{output}\"",
                     UseShellExecute = true,
                     CreateNoWindow = false,
                 }
@@ -36,29 +54,7 @@ namespace YTDownload.Application.Services
             process.Start();
             process.WaitForExit();
 
-            return outputFilePath;
-        }
-
-        private static string ConvertVideoToMp4(string filePath)
-        {
-            int threadsToUse = Math.Max(1, Environment.ProcessorCount - 2);
-            string outputFilePath = Path.ChangeExtension(filePath, ".mp4");
-
-            Process process = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = ffmpeg,
-                    Arguments = $"-i \"{filePath}\" -c:v libx264 -preset ultrafast -c:a aac -b:a 128k -threads {threadsToUse} -y \"{outputFilePath}\"",
-                    UseShellExecute = true,
-                    CreateNoWindow = false,
-                }
-            };
-
-            process.Start();
-            process.WaitForExit();
-
-            return outputFilePath;
+            return output;
         }
     }
 }

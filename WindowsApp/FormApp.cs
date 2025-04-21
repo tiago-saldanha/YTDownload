@@ -27,13 +27,13 @@ namespace WindowsApp
             try
             {
                 ChangeEnableButtons();
-                var streams = await _service.DownloadManifestInfo(textBoxUrlVideo.Text);
+                var streams = await _service.DownloadManifest(textBoxUrlVideo.Text);
                 if (streams != null && streams.Any())
                 {
                     dataGridView.DataSource = null;
                     dataGridView.DataSource = streams.Select(stream => new
                     {
-                        ContainerName = stream.ContainerName,
+                        stream.ContainerName,
                         MegaBytes = Math.Round(stream.Size, 2),
                         Resolution = stream.Resolution ?? null,
                         VideoCodec = stream.VideoCodec ?? null,
@@ -67,12 +67,12 @@ namespace WindowsApp
             if (dataGridView.SelectedRows.Count > 0)
             {
                 var row = dataGridView.SelectedRows[0];
-                var filePath = string.Empty;
+                var file = string.Empty;
                 try
                 {
                     ChangeEnableButtons();
                     var command = GetCommand(row);
-                    filePath = await _service.Download(command);
+                    file = await _service.Download(command);
                     textBoxOutput.Clear();
                 }
                 catch
@@ -80,29 +80,27 @@ namespace WindowsApp
                 }
                 finally
                 {
-                    textBoxOutput.Text = filePath;
+                    textBoxOutput.Text = file;
 
-                    if (!File.Exists(filePath)) MessageBox.Show($"Erro ao baixar o arquivo: {filePath}");
+                    if (!File.Exists(file)) MessageBox.Show($"Erro ao baixar o arquivo: {file}");
                     textBoxUrlVideo.Clear();
-                    if (checkBoxAutoPlay.Checked && !string.IsNullOrEmpty(filePath)) Play(filePath);
+                    if (checkBoxAutoPlay.Checked && !string.IsNullOrEmpty(file)) Play(file);
                     ChangeEnableButtons();
                     Ok(true);
-                    if (checkBoxConverterMp3.Checked) Converter(filePath);
+                    if (checkBoxConverterMp3.Checked) Converter(file);
                 }
             }
         }
 
         private DownloadCommand GetCommand(DataGridViewRow row)
         {
-            bool isAudioOnly = false;
-            Boolean.TryParse(row.Cells["IsAudioOnly"].Value.ToString(), out isAudioOnly);
+            bool.TryParse(row.Cells["IsAudioOnly"].Value.ToString(), out bool isAudioOnly);
             var containerName = row.Cells["ContainerName"].Value.ToString();
             var audioCodec = row.Cells["AudioCodec"].Value?.ToString();
             var resolution = row.Cells["Resolution"].Value?.ToString();
             var videoCodec = row.Cells["VideoCodec"].Value?.ToString();
             var url = row.Cells["Url"].Value.ToString();
-            var command = new DownloadCommand(url, containerName, videoCodec, resolution, audioCodec, isAudioOnly);
-            return command;
+            return new DownloadCommand(url, containerName, videoCodec, resolution, audioCodec, isAudioOnly);
         }
 
         private void Play(object sender, EventArgs e)
@@ -110,24 +108,29 @@ namespace WindowsApp
             ChangeEnableButtons();
 
             if (string.IsNullOrEmpty(textBoxOutput.Text))
+            {
                 MessageBox.Show($"Nenhum arquivo lozalido!");
+                return;
+            }
             else
+            {
                 Play(textBoxOutput.Text);
+            }
 
             ChangeEnableButtons();
         }
 
-        private void Play(string filePath) => MediaPlayer.Play(filePath);
+        private void Play(string file) => MediaPlayer.Play(file);
 
-        private async void Converter(string filePath)
+        private async void Converter(string file)
         {
-            if (!File.Exists(filePath))
+            if (!File.Exists(file))
             {
-                MessageBox.Show($"O arquivo({filePath}) não existe.");
+                MessageBox.Show($"O arquivo({file}) não existe.");
                 return;
             }
 
-            await _service.Converter(filePath);
+            await _service.Converter(file);
         }
 
         private void ChangeEnableButtons()
@@ -145,9 +148,6 @@ namespace WindowsApp
             Ok(false);
         }
 
-        private void Ok(bool valid)
-        {
-            buttonOk.Image = valid ? Image.FromFile(Path.Combine(Environment.CurrentDirectory, "icons", "verificar-verde.png")) : Image.FromFile(Path.Combine(Environment.CurrentDirectory, "icons", "verificar-cinza.png"));
-        }
+        private void Ok(bool valid) => buttonOk.Image = valid ? Image.FromFile(Path.Combine(Environment.CurrentDirectory, "icons", "verificar-verde.png")) : Image.FromFile(Path.Combine(Environment.CurrentDirectory, "icons", "verificar-cinza.png"));
     }
 }

@@ -1,4 +1,4 @@
 namespace YTDownload.Application.Commands
 {
-    public record DownloadManifestCommand(string Url);
+    public readonly record struct DownloadManifestCommand(string Url);
 }

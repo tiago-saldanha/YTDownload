@@ -12,20 +12,16 @@ namespace YTDownload.Application.ViewModel
         public string? Resolution { get; private set; }
         public string? VideoCodec { get; private set; }
 
-        public static StreamManifestViewModel Create(IStreamInfo stream, string url)
-        {
-            return new StreamManifestViewModel(stream, url);
-        }
+        public static StreamManifestViewModel Create(IStreamInfo stream, string url) => new(stream, url);
 
         private StreamManifestViewModel(IStreamInfo stream, string url)
         {
-            if (stream == null)
-                throw new ArgumentNullException(nameof(stream));
+            ArgumentNullException.ThrowIfNull(stream);
 
             Url = url;
             ContainerName = stream.Container.Name;
             Size = stream.Size.MegaBytes;
-            IsAudioOnly = stream is IAudioStreamInfo audioStream;
+            IsAudioOnly = stream is IAudioStreamInfo;
 
             AddMedia(stream);
         }
