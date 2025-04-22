@@ -1,5 +1,6 @@
-using YTDownload.CrossCutting.AppDependencies;
+using YTDownload.CrossCutting.Ioc;
 using YTDownload.Front.Components;
+using YTDownload.Front.Ioc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,10 +10,7 @@ builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
-}
+app.ConfigureApp();
 
 app.UseStaticFiles();
 app.UseAntiforgery();

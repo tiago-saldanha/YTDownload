@@ -8,9 +8,16 @@ namespace YTDownload.Application.Services
 
         private static string Get()
         {
-            var ffmpeg = Environment.OSVersion.Platform == PlatformID.Unix ? "ffmpeg" : "ffmpeg.exe";
-            var path = System.IO.Path.Combine(AppContext.BaseDirectory, "lib", ffmpeg);
-            if (!File.Exists(path)) throw new FileNotFoundException("FFmpeg não encontrado. Certifique-se de que o ffmpeg.exe/ffmpeg está na pasta lib.");
+            var path = string.Empty;
+
+            if (Environment.OSVersion.Platform == PlatformID.Unix)
+                path = "/app/lib/ffmpeg";
+            else
+                path = System.IO.Path.Combine(AppContext.BaseDirectory, "lib", "ffmpeg.exe");
+            
+            if (!File.Exists(path))
+                throw new FileNotFoundException("FFmpeg não encontrado. Certifique-se de que o ffmpeg.exe/ffmpeg está na pasta lib.");
+
             return path;
         }
 
@@ -20,13 +27,13 @@ namespace YTDownload.Application.Services
 
             var process = new Process
             {
-               StartInfo = new ProcessStartInfo
-               {
-                   FileName = Path,
-                   Arguments = $"-i \"{file}\" -preset ultrafast -b:a 192k \"{output}\" -y",
-                   UseShellExecute = true,
-                   CreateNoWindow = false
-               }
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = Path,
+                    Arguments = $"-i \"{file}\" -preset ultrafast -b:a 192k \"{output}\" -y",
+                    UseShellExecute = true,
+                    CreateNoWindow = false
+                }
             };
 
             process.Start();

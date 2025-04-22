@@ -1,4 +1,4 @@
-using YTDownload.CrossCutting.AppDependencies;
+using YTDownload.CrossCutting.Ioc;
 
 var builder = WebApplication.CreateBuilder(args);
 

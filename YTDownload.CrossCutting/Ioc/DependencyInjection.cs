@@ -3,7 +3,7 @@ using YoutubeExplode;
 using YTDownload.Application.Interfaces;
 using YTDownload.Application.Services;
 
-namespace YTDownload.CrossCutting.AppDependencies
+namespace YTDownload.CrossCutting.Ioc
 {
     public static class DependencyInjection
     {
