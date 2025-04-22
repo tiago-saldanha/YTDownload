@@ -115,6 +115,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="lib\ffmpeg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="lib\ffmpeg.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

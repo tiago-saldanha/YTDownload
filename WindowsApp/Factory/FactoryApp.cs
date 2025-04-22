@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using WindowsApp;
 using Serilog;
-using YTDownload.CrossCutting.AppDependencies;
+using YTDownload.CrossCutting.Ioc;
 
 namespace YTDownload.App.Factory
 {
