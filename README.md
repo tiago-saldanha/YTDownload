@@ -61,7 +61,7 @@ docker compose up -d
 ### 🌐 Build manual da imagem com Docker
 
 ```bash
-docker build -f "C:\Users\Tiago\Source\Repos\YTDownload\YTDownload\Dockerfile" -t ytdownload:dev "C:\Users\Tiago\Source\Repos\YTDownload"
+docker build -f "YTDownload.Front\Dockerfile" -t ytdownload:dev .
 ```
 
 ---
@@ -69,9 +69,10 @@ docker build -f "C:\Users\Tiago\Source\Repos\YTDownload\YTDownload\Dockerfile" -
 ### ▶️ Executar com `docker run`
 
 ```bash
-docker run -dp 8080:80 -p 8081:443 \
+docker run -dp 8080:80 \
   -e "ASPNETCORE_ENVIRONMENT=Development" \
   -e "ASPNETCORE_URLS=http://+:80" \
+  --name ytdownload
   ytdownload:dev
 ```
 
